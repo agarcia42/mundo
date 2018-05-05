@@ -1,0 +1,43 @@
+<?php $Periodo=load::model('periodo'); ?>
+
+<?php echo View::Content() ?>
+
+<?php echo Ajax::form('page-wrapper', 'exportar/Seccion');  ?>
+<div class="box box-info">
+                                     <div class="box-header with-border">
+                                            <h4 class="page-head-line">Exportar Seccion</h4>
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label for="codigo">Del Año:</label>
+                                                         <?php echo Conesth::dbselect("codper","codper","periodo","",$codper,"form-control","exportar/seccion"); ?>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label for="codigo">Para el Año</label>
+                                                        <select id="ano" name="ano" class="form-control">
+                                                             <option value="0">Seleccione Una..</option>
+                                                            <?php if($codper!='0'){ ?>
+                                                                <? foreach($Periodo->find("codper>'$codper'","order: codper desc") as $p): ?>
+                                                                    <? if($ano==($p->codper)) { ?>
+                                                                        <option value='<?= $p->codper?>' selected="selected"><?= $p->codper ?></option>
+                                                                    <? }else{ ?>
+                                                                        <option value='<?= $p->codper?>' ><?= $p->codper ?></option>
+                                                                    <? } ?>
+                                                                <? endforeach; ?>
+                                                            <? } ?>
+                                                        </select>           
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-12 pull-right">
+                                                    <?php echo form::hidden("seccion.fecreg"); ?>
+                                                     <?php echo Form::submit('Guardar',"class='btn btn-info btn-lg pull-right' name='aceptar'") ?>
+                                                </div>
+                                            </div>
+                                    </div>
+                            </div>
+<?php echo Form::close(); ?>
+   

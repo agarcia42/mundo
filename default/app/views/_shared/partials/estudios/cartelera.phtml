@@ -1,0 +1,203 @@
+<?php $Cepoin = Load::model('cepoin'); ?>
+<?php $Cecar = Load::model('cecar'); ?>
+<?php $Horario = Load::model('horario'); ?>
+<?php $Cedesca = Load::model('cedesca'); ?>
+
+<div class="panel panel-primary-card panel-shadow">
+	<div class="panel-heading">
+		<h1 class="blue text-center">Cartelera Digital</h1>
+ 	</div>
+ 	<div class="panel-body">
+        <h4>Manténte al día con la información que te interesa</h4> 
+        <!--small cards-->
+        <div class="row">
+            <div class="col-md-4">
+        		<div class="card">
+                    <div class="card-content-lg">
+                    	<div class="card-header-blue">
+                           <h1 class="card-heading">Inscripciones Abiertas</h1>
+                       	</div>
+                       	<div class="card-body">
+                     		<p class="card-p">
+                            	<?php $x=1; ?>
+                            	<?php foreach($Cepoin->find_all_by_sql("select distinct a.codsed,b.dessed from cepoin a,cepsed b where a.codsed=b.codsed and a.stains='1' order by codsed asc") as $sedes){ ?>
+        							<div class="panel-group" id="accordion">
+        								<div class="panel panel-default">
+            								<div class="panel-heading">
+            									<h4 class="panel-title">
+                                					<a data-toggle="collapse" data-parent="#accordion" href="#collapse<?php echo $x ?>">
+														<?php echo "<b>".$sedes->codsed." - ".$sedes->dessed."</b><br>"; ?> 	   	                        				</a>
+               	                                 </h4>
+                   	                          </div>
+                                              <div id="collapse<?php echo $x ?>" class="panel-collapse collapse off">
+                      	       	 			  	<?php foreach($Cepoin->find_all_by_sql("select distinct a.codcar,b.descar from cepoin a,cecar b where a.codcar=b.codcar and a.stains='1' and codsed='$sedes->codsed' order by a.codcar asc") as $car){ ?>
+                           	           		  		<?php foreach ($Cepoin->find_all_by_sql("select distinct a.tiphor,b.deshor from cepoin a,ceptur b where a.tiphor=b.tiphor and a.stains='1' and a.codcar='$car->codcar' and a.codsed='$sedes->codsed'") as $hor){ ?>
+                                       				
+           												<div class="panel-body">
+															<?php echo $car->descar." - ".$hor->tiphor."<br>"; ?>
+                                                       	</div>
+                                       		 	 	<?php } ?>
+                           					  	<?php } ?>
+                                             </div>
+        	                              </div>
+                                     </div>
+                                    <?php $x++ ?>
+								<?php } ?>   
+                            </p>
+                     	</div>
+                     	
+                     	<!--<nav class="nav-tabs">
+                     		<ul class="nav nav-pills pull-left">
+                                <li class="card-action"><a href="#">Link</a></li>
+                                <li class="card-action"><a href="#">Link</a></li>
+                                <li class="card-action"><a href="#">Link</a></li>
+                                <li class="card-action"><a href="#">Link</a></li>
+                            </ul>
+                     	</nav>-->
+                    </div>
+                </div>
+           	</div>
+        	<div class="col-md-4">
+        		<div class="card">
+                    <div class="card-content-lg">
+                    	<div class="card-header-orange">
+                           <h1 class="card-heading">Horarios</h1>
+                       	</div>
+                       	<div class="card-body">
+                     		<p class="card-p">
+                        	<div id="reporte"></div>
+                        	<?php foreach($Horario->find_all_by_sql("select distinct a.codcar,a.codsed,a.tiphor,a.numano,a.numper,b.descar,c.dessed from horario a, cecar b, cepsed c where a.codcar||a.codsed||a.tiphor||a.numano||a.numper in(select distinct codcar||codsed||tiphor||numano||numper from cepara) and a.codcar=b.codcar and a.codsed=c.codsed order by a.codcar") as $h){ ?>
+                          		<nav class="nav-tabs">
+                     				<ul class="nav nav-pills pull-left">
+                            	    	<li>
+                                	    	<?php echo Ajax::link("reportes/rpfhorario/$h->codcar/$h->codsed/$h->tiphor/$h->numano/$h->numper", "$h->descar SEDE $h->dessed - $h->tiphor $h->numano-$h->numper", "reporte", "card-action-orange"); ?>
+                                    	</li>
+                            		</ul>
+                     			</nav>
+                     	   <?php } ?>
+                           </p>
+                     	</div>
+                     	<!--<nav class="nav-tabs">
+                     		<ul class="nav nav-pills pull-left">
+                                <li><a class="card-action-orange" href="#">Link</a></li>
+                                <li><a class="card-action-orange" href="#">Link</a></li>
+                                <li><a class="card-action-orange" href="#">Link</a></li>
+                                <li><a class="card-action-orange" href="#">Link</a></li>
+                            </ul>
+                     	</nav>-->
+                    </div>
+                </div>
+        	</div>
+        	<div class="col-md-4">
+        		<div class="card">
+                    <div class="card-content-lg">
+                    	<div class="card-header-turquesa">
+                           <h1 class="card-heading">Descargas</h1>
+                       	</div>
+                       	<div class="card-body">
+                        	<p class="card-p">
+                         		<?php foreach(Load::model('cedesca')->find("status='A'") as $d){ ?>
+	                          		<ul>
+                                    	<a href="<?php echo PUBLIC_PATH."files/upload/".$d->nomarc; ?>" target="blank" class="card-action-blue"><?php echo $d->nomenl; ?> </a><br>
+                                    </ul>
+                               	<?php } ?>
+                           	</p>
+                     	</div>
+                     	<!--<nav class="nav-tabs">
+                     		<ul class="nav nav-pills pull-left">
+                                <li ><a class="card-action-grey" href="#">Link</a></li>
+                                <li><a class="card-action-grey" href="#">Link</a></li>
+                                <li><a class="card-action-grey" href="#">Link</a></li>
+                                <li><a class="card-action-grey" href="#">Link</a></li>
+                            </ul>
+                     	</nav>-->
+                    </div>
+                </div>
+     	   </div>
+        </div>
+    </div>                
+</div>
+        <!--row two--
+         <div class="row">
+        	<div class="col-md-4">
+        		<div class="card">
+                    <div class="card-content">
+                    	<div class="card-header-green">
+                           <h1 class="card-heading">Card Header verde</h1>
+                       	</div>
+                       	<div class="card-body">
+                     	  <p class="card-p">
+                                There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour,
+                                or randomised words which don't look even slightly believable. If you are going to use a passage of Lorem Ipsum, you need to be sure there
+                                isn't anything embarrassing hidden in the middle of text.
+                                
+                            </p>
+                     	</div>
+                     	
+                     	<nav class="nav-tabs">
+                     		<ul class="nav nav-pills pull-left">
+                                <li><a class="card-action-green" href="#">Link</a></li>
+                                <li><a class="card-action-green" href="#">Link</a></li>
+                                <li><a class="card-action-green" href="#">Link</a></li>
+                                <li><a class="card-action-green" href="#">Link</a></li>
+                            </ul>
+                     		
+                     	</nav>
+                     		
+                    </div>
+                </div>
+           	</div>
+        <div class="col-md-4">
+        	<div class="card">
+                    <div class="card-content">
+                    	<div class="card-header-red">
+                           <h1 class="card-heading">Card Header Red</h1>
+                       	</div>
+                       	<div class="card-body">
+                     	  <p class="card-p">
+                                There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour,
+                                or randomised words which don't look even slightly believable. If you are going to use a passage of Lorem Ipsum, you need to be sure there
+                                isn't anything embarrassing hidden in the middle of text.
+                                
+                            </p>
+                     	</div>
+                     	
+                     	<nav class="nav-tabs">
+                     		<ul class="nav nav-pills pull-left">
+                                <li><a class="card-action-red" href="#">Link</a></li>
+                                <li><a class="card-action-red" href="#">Link</a></li>
+                                <li><a class="card-action-red" href="#">Link</a></li>
+                                <li><a class="card-action-red" href="#">Link</a></li>
+                            </ul>
+                     		
+                     	</nav>
+                     		
+                    </div>
+                </div>
+        </div>
+        <div class="col-md-4">
+        	<div class="card">
+                    <div class="card-content">
+                    	<div class="card-header-amarillo">
+                           <h1 class="card-heading">Card Header Blank</h1>
+                       	</div>
+                       	<div class="card-body">
+                     	  <p class="card-p">
+                                There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour,
+                                or randomised words which don't look even slightly believable. If you are going to use a passage of Lorem Ipsum, you need to be sure there
+                                isn't anything embarrassing hidden in the middle of text.
+                                
+                            </p>
+                     	</div>
+                     	
+                     	<nav class="nav-tabs">
+                     		<ul class="nav nav-pills pull-left">
+                                <li class="card-action"><a href="#"><span><i class="fa fa-facebook"></i></span></a></li>
+                                <li class="card-action"><a href="#"><span><i class="fa fa-google-plus"></i></span></a></li>
+                                <li class="card-action"><a href="#"><span><i class="fa fa-share-alt"></i></span></a></li>
+                                <li class="card-action"><a href="#"><span><i class="fa fa-plus"></i></span></a></li>
+                            </ul>
+                     		
+                     	</nav>-->
+                     		
+			

@@ -1,0 +1,88 @@
+
+<?php echo Conesth::ruta('Perfil/Datos Personales') ?>
+
+ <?php View::content() ?>
+        <section class="content">
+
+          <div class="row">
+          <?php echo Html::img('estudiante/user2-160x160.jpg', $alt='User Image', "class='profile-user-img img-responsive img-circle'"); ?>
+                   
+                    <h3 class="profile-username text-center"><?php echo $data->nomest.' '.$data->apeest; ?></h3>
+            <div class="col-md-12 center-block" style="float:none">
+
+              <!-- Profile Image -->
+                <div class="nav-tabs-custom">
+                  <ul class="nav nav-tabs">
+                    <li class="active"><a href="#personal" data-toggle="tab">Datos Personales</a></li>
+                    <li><a href="#otros" data-toggle="tab">Otros Datos</a></li>
+                  <!-- <li><a href="#settings" data-toggle="tab">Settings</a></li> -->
+                  </ul>
+                <div class="tab-content">
+                  <div class="active tab-pane" id="personal">
+                    <div class="box-body box-profile">
+                  <strong>Nombres</strong>
+                  <p class="text-muted pull-right"><?php echo $data->nomest; ?></p>
+                  <hr>
+                  
+                  <strong>Apellidos</strong>
+                  <p class="text-muted pull-right"><?php echo $data->apeest; ?></p>
+                  <hr>
+                  
+                  <strong>Cédula de Identidad</strong>
+                  <p class="text-muted pull-right"><?php echo $data->numced; ?></p>
+                  <hr>
+                 
+                   <strong>Lugar de Nacimiento</strong>
+                  <p class="text-muted pull-right"><?php echo $data->lugnac; ?></p>
+                  <hr>
+                  <strong>Fecha de Nacimiento</strong>
+                  <p class="text-muted pull-right"><?php echo $data->fecnac; ?></p>
+                  <hr>
+                  <strong>Estado Civil</strong>
+                  <p class="text-muted pull-right"><?php echo Conest::estadocivil($data->estciv); ?></p>
+                  <hr>
+                  <strong>Sexo</strong>
+                  <p class="text-muted pull-right"><?php echo Conest::sexo($data->codsex); ?></p>
+                  <hr>
+                  <strong>Telefono</strong>
+                  <p class="text-muted pull-right"><?php echo $data->telef1; ?></p>
+                  <hr>
+                  <strong>Dirección</strong>
+                  <p class="text-muted pull-right"><?php echo $data->direc1; ?></p>
+                  <hr>
+
+                </div><!-- /.box-body -->
+              </div><!-- /.box -->
+
+              <!-- About Me Box -->
+              <div class="tab-pane" id="otros">
+                <div class="box-body">
+                  <strong><i class="fa fa-book margin-r-5"></i>  Plantel de Procedencia</strong>
+                  <p class="text-muted pull-right"><?php echo $dat->liceos; ?></p>
+                  <hr>
+
+                  <strong><i class="fa fa-calendar margin-r-5"></i> Año de Graduación</strong>
+                  <p class="text-muted pull-right" align="right"> <?php echo $data->anogra; ?></p>
+                  <hr>
+
+                  <strong><i class="fa fa-line-chart margin-r-5"></i> Promedio</strong>
+                  <p class="text-muted pull-right"> <?php echo $data->prombc; ?></p>
+                  <hr>
+
+                  <strong><i class="fa fa-envelope margin-r-5"></i> Correo Electrónico</strong>
+                  <p class="text-muted pull-right"> <?php echo $dat->correo; ?></p>
+	              <hr>
+
+                  <strong><i class="fa fa-user margin-r-5"></i> Nombre de Usuario</strong>
+                  <p class="text-muted pull-right"> <?php echo $dat->usuario; ?></p>
+                  <hr>
+                
+
+                </div><!-- /.box-body -->
+              </div><!-- /.box -->
+            </div><!-- /.col -->
+          </div>
+            
+          </div><!-- /.row -->
+
+        </section><!-- /.content -->

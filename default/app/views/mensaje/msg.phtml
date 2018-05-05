@@ -1,0 +1,124 @@
+<?php View::content() ?>
+
+<div id="page-inner">
+                <div class="row">
+                    <div class="col-md-6">
+                      <div class="box box-solid box-info">
+                        <div class="box-header with-border"><strong>BUSCAR REPRESENTANTE</strong>
+                        <div class="box-tools pull-right">
+                          <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+                          </button>
+                        </div><!-- /.box-tools -->
+                        </div><!-- /.box-header -->
+                          <div class="box-body">
+                              <?php echo View::partial('estudiantes/buscar') ?>
+                          </div><!-- /.box-body -->
+                        </div><!-- /.box -->
+                    </div><!-- /.col-md-6 -->
+                
+                    <div class="col-md-6">
+                        <div class="row">
+                    <div class="col-md-12">
+                        <h3 class="page-head-line">Acceso Rápido</h3>
+                    </div>
+                </div>
+                
+                <div class="row">
+                    <div class=" col-md-6 col-sm-6">
+                        <div class="style-box-one Style-one-clr-one">
+                            <?php echo Ajax::link('representante/nuevo', '<i class="fa fa-user fa-4x"></i>
+                                 <h5>Nuevo Representante</h5>', 'contenedor'); ?>
+                        </div>
+                    </div>
+              <div class=" col-md-6 col-sm-6">
+                <div class="style-box-one Style-one-clr-two">
+                            <a href="#">
+                                <i class="fa fa-print fa-4x"></i>
+                                 <h5>Facturas</h5>
+                            </a>
+                        </div>
+                        </div>
+        
+                </div>
+                    </div>
+               </div>
+                
+
+      <!--INICIA LA LISTA DE REPRESENTANTES -->  
+      <div class="row">
+                    <div class="col-md-12">
+                        <div class="alert alert-danger">
+                            A continuación te presentamos una lista de representantes, donde podrás seleccionar uno...
+                        </div>
+                    </div>
+      </div>
+
+     
+      <div class="row">
+        <div class="col-md-12" id='contenedor'>
+            <!-- The timeline -->
+                     <div class="box box-info">
+                      <div class="box-header with-border">
+                             <h3>Representantes</h3>
+                      </div>
+                      <div class="box-body">
+                       <div class="table-responsive">
+                        <table class="table table-bordered table-striped table-hover">
+                          <tr>
+                            <th width="10%">Nro.</th>
+                            <th width="28%">Apellidos</th>
+                            <th width="28%">Nombres</th>
+                            <th width="10%" align="center">Cédula</th>
+                            <th width="15%">Teléfono</th>
+                            <th width="9%" align="center" colspan="3">Acción</th>
+                          </tr>
+                          <?php $y=1; ?>
+                          <?php $x=Load::model('representante')->buscar($conditions,$pag,$perpag); ?>
+                          <?php foreach($x->items as $h){ ?>
+                          <tr>
+                                <td><?php echo $y ?></td> 
+                                <td><?php echo $h->aperep ?></td> 
+                                <td><?php echo $h->nomrep ?></td> 
+                                <td><?php echo $h->cedrep ?></td> 
+                                <td><?php echo $h->telcasrep ?></td>
+                                <td  align="center" width="3%">
+                                  <?php echo Ajax::link('representante/nuevo/'.$h->cedrep.'/M', '<i class="fa fa-user"></i>', 'contenedor'); ?>
+                                </td>
+                                <td  align="center" width="3%">
+                                <?php echo Ajax::link("mensaje/msg/0/{$pag}/{$perpag}/".$h->cedrep."/E", '<i class="fa fa-minus"></i>', 'page-wrapper'); ?>
+                                </td>
+                                <td  align="center" width="3%">
+                                <?php echo Ajax::link("representante/portal/".$h->cedrep, '<i class="fa fa-minus"></i>', 'page-wrapper'); ?>
+                                </td>
+                          </tr>
+                          <?php $y++; ?>
+                          <?php } ?>
+                        </table>
+                    </div>
+              </div>
+               <div class="box-footer clearfix">
+                        
+                          <ul class="pagination pagination-sm no-margin pull-right">
+                          <?php if($x->prev!=""){ ?>
+                            <li><?php echo Ajax::link("mensaje/msg/0/".$x->prev."/{$perpag}", '&laquo;', 'page-wrapper'); ?></li>
+                          <?php } ?>
+                             <?php for($i=1; $i<=$x->total; $i++): ?>
+                              <?php $class=($i==$x->current) ? 'active' : ''; ?>
+                            <li class='<?php echo $class ?>'>
+                              <?php echo Ajax::link("mensaje/msg/0/".$i."/{$perpag}", $i, 'page-wrapper'); ?>
+                            </li>
+                           <?php endfor ?>
+                            <?php if($x->next!=""){ ?>
+                            <li><?php echo Ajax::link("mensaje/msg/0/".$x->next."/{$perpag}", '&raquo;', 'page-wrapper'); ?>
+                            </li>
+                            <?php } ?>
+                          </ul>
+                        </div>
+              <div class="box-footer clearfix">
+                <a href="javascript:void(0)" class="btn btn-sm btn-info btn-flat pull-right"><span class="glyphicon glyphicon-print" aria-hidden="true"></span> Imprimir </a>   
+              </div>
+            </div>
+          </div>
+        </div>
+
+</div><!--page iner -->

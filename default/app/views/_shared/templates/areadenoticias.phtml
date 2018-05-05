@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>UNEFM - Dirección de Control de Estudios</title>
+        <meta name="description" content="Pagina Oficial de la Dirección de Control de Estudios de la Universidad Nacional Experimental Francisco de Miranda, UNEFM. Coro estado Falcón">
+        <meta name="author" content="Dirección de Control de Estudios">
+        <meta name="viewport" content="width=max-width, initial-scale=1.0">
+        <link rel="icon" type="image/png" sizes="32x32" href="img/img/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="96x96" href="img/img/favicon-96x96.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="img/img/favicon-16x16.png">
+        <link rel="manifest" href="/manifest.json">
+        <meta name="msapplication-TileColor" content="#ffffff">
+        <meta name="msapplication-TileImage" content="/ms-icon-144x144.png">
+        <meta name="theme-color" content="#ffffff">
+        <?php Tag::css('bootstrap') ?>
+        <?php Tag::css('estilo') ?>
+        <?php Tag::css('menu-estilos') ?>
+        <?php Tag::css('exception') ?>
+        <?php echo Html::includeCss() ?>
+        <?php echo Tag::js('js/dist/jquery.min'); ?>
+        <?php echo Tag::js('jquery/jquery.kumbiaphp'); ?>
+         <?php echo Tag::js('jquery/jquery.kumbiaphp.min'); ?>
+    </head>
+
+    <body>
+       <header role="banner" id="headerArea" class="navbar-fixed-top">
+            <!-- PARTIAL HEADER -->
+			<?php echo View::partial('estudios/header') ?>         
+            <!-- FIN DEL PARTIAL HEADER -->
+			<!-- PARTIAL MENU -->
+			<?php echo View::partial('estudios/menu') ?>    
+    		<!--< FIN DEL PARTIAL MENU >-->
+		</header>
+	
+		<div id="conte" class="container">
+        	<div class="container contenido-noticias">
+        		<div id="blog" class="row">
+       				<?php echo View::partial('noticias/menunoticias') ?>
+                    <?php if($open==1){ ?>
+                    	<?php echo View::partial('noticias/noticiaopen') ?>
+                    <?php }else{ ?>
+                    	<?php echo View::partial('noticias/mostrartodas') ?>
+                    <?php } ?>
+				</div>
+        	</div>
+        </div>
+
+		<!--PARTIAL FOOTER-->
+        <?php echo View::partial('estudios/footer') ?>
+		<!--FIN PARTIAL FOOTER-->
+
+        <?php echo Tag::js('js/modernizr-latest'); ?>
+        <?php echo Tag::js('js/bootstrap'); ?>
+        <?php echo Tag::js('js/script'); ?>
+        <?php echo Tag::js('js/slick'); ?>
+
+    </body>
+</html>

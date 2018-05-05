@@ -1,0 +1,96 @@
+<?php View::content() ?>
+  <?php if(Load::model('cepoin')->aperturado($codcar,$codsed,$tiphor,'staret') and Load::model('cepoin')->rt_fecha($codcar,$codsed,$tiphor)){ ?>
+      <?php echo Conesth::ruta('Procesos/Retiro') ?>
+      <?php echo Ajax::form('page-wrapper', 'procesos/retiro');  ?>
+      <section class="content"> 
+          <div class="box box-default">
+              <div class="box-header with-border">
+                  <h3 class="box-title"> Asignaturas Inscritas </h3>
+              </div>
+               <!-- Lista de Asignaturas -->
+              <div class="box-body box-profile">
+                    <?php $x=0; ?>
+                    <?php foreach(Load::model('ceinse')->todos_te($numcar,$codcar,$codsed,$tiphor,
+                                                         $numano,$numper) as $c) { ?>
+                        <?php $existe=Load::model('cepret')->selecciona($numcar,$codcar,
+                                                         $codsed,$tiphor,$numano,$numper,
+                                                         $c->codmat); ?>
+                        
+                        <?php $mat=Load::model('cemmat')->busca_uno($c->codcar,$c->codmat); ?>
+
+                        <div class="row">
+                          <div class="col-xs-12 col-md-8"> 
+                            <?php echo Form::hidden("codmat".$x, NULL,$mat->codmat) ?>
+                            <?php echo '  '.$mat->codmat.'-'.$mat->nommat ?></div>
+                          <div class="col-xs-6 col-md-2 ">
+                            <?php echo $mat->numcre." U.C" ?>
+                          </div>
+                          <div class="col-xs-6 col-md-2" align="right">
+                             <?php if(!$existe){ ?>
+                              <?php echo Form::check('materi'.$x, "1",NULL,NULL);  ?>
+                              <?php }else{ ?><?php echo Html::img('info.png','Valiar',"border= '0' width= '20' height= ' 20' title= 'Para realizar el retiro definitivo de la(s) Unidad(es) Curricular(es), debe introducir el codigo que se le envió al correo'"); } ?>
+                          </div>
+                        </div>
+                        <hr>
+
+                        <?php $x++; ?>
+                        
+                        
+                    <?php } ?> 
+                    <?php echo Form::hidden("cecen.codpln".$x, NULL,$x) ?>
+                    <?php echo Form::hidden("l", NULL,$x); ?>
+                   <p class="pull-right"><?php echo Form::submit('Retirar',"class='btn btn-info btn-lg pull-right' name='aceptar' value='aceptar'") ?></p>
+              </div>
+          </div>    
+      </section><!-- /.content -->
+      <?php echo Form::close(); ?>
+
+      <br>
+      <?php if(Load::model('cepret')->pr_retiro($numcar,$codcar,$codsed,$tiphor,
+                                                         $numano,$numper)){ ?>
+      <div id="validar">
+      <?php echo Ajax::form('page-wrapper', 'procesos/validar');  ?>
+      <section class="content"> 
+          <div class="box box-default">
+              <div class="box-header with-border">
+                  <h3 class="box-title"> Asignatura(s) Pre-Retirada(s)</h3>
+              </div>
+               <!-- Lista de Asignaturas -->
+              <div class="box-body box-profile">
+                    <?php foreach(Load::model('cepret')->pr_retiro($numcar,$codcar,$codsed,$tiphor,
+                                                         $numano,$numper) as $c) { ?>
+                        <?php $mat=Load::model('cemmat')->busca_uno($c->codcar,$c->codmat); ?>
+                        <div class="row">
+                          <div class="col-xs-12 col-md-8"> 
+                            <?php echo '  '.$mat->codmat.'-'.$mat->nommat ?></div>
+                          <div class="col-xs-6 col-md-2 ">
+                            <?php echo $mat->numcre." U.C" ?>
+                          </div>
+                          <div class="col-xs-6 col-md-2" align="right">
+                              <?php echo Ajax::linkConfirm('procesos/retiro/'.$c->codmat.'/E', 'ELIM', 'page-wrapper','Esta seguro que no desea Retirar esta materia?'); ?>
+                          </div>
+                        </div>
+                        <hr>
+                    <?php } ?> 
+                   <p class="pull-right"><?php echo Flash::notice("<h4><font color='navy'>Coloque el <b>Código que se envió a su correo</b>,  <br> para realizar el retiro definitivo de la(s) Asignatura(s) Pre-Retirada(s).</font></h4>"); ?>
+                       <div class="row">
+                          <div class="col-xs-10 col-md-10"> 
+                            <input type="text" class="form-control" placeholder="Código de Validación" id="cv" name="cv" autocomplete="off" maxlength="50" value="" size="20">
+                          </div>
+                          <div class="col-xs-2 col-md-2 ">
+                            <?php echo Form::submit('Validar',"class='btn btn-info btn-lg pull-right' name='validar' id='validar' value='validar'") ?> 
+                          </div>
+                       </div>
+                    </p>
+              </div>
+          </div>    
+      </section><!-- /.content -->
+      <?php echo Form::hidden("cecen.codpln", NULL,'1') ?>
+      <?php echo Form::close(); ?>
+     </div>
+    <?php } ?>
+    <? }else{ ?>
+      <div align="center"><? Flash::warning("Error: el CENSO de unidades curriculares esta cerrado"); ?></div>
+    <?php } ?>
+ 
+

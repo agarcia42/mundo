@@ -1,0 +1,30 @@
+
+<?php View::content() ?>
+<?php if($vist==1){  ?>
+<script type="text/javascript">
+                     var nuevo = jQuery.noConflict();
+                     nuevo(document).ready(function() {
+                     nuevo.ajax({
+                             type: "POST",
+                             url:  'representante/portal/'+<?php echo $cedrep ?>,
+                             data: "",
+                             success: function(html){
+                                      nuevo("#page-wrapper").html(html);
+                                      }
+                              })                        
+                      })
+</script> 
+<script type="text/javascript">
+                     var nuevo = jQuery.noConflict();
+                     nuevo(document).ready(function() {
+                     nuevo.ajax({
+                             type: "POST",
+                             url:  'alumno/index/'+<?php echo $cedrep ?>+'/'+<?php echo $codalu ?>,
+                             data: "",
+                             success: function(html){
+                                      nuevo("#contenedor").html(html);
+                                      }
+                              })                        
+                      })
+</script> 
+<?php } ?>

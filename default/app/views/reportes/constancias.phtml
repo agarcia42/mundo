@@ -1,0 +1,23 @@
+<div id="modalizar" style="display:<?php echo $ver; ?>"></div>
+
+
+<div id="ventana" class="contenedor" style="display:<?php echo $ver; ?>; background-color:#FFF" >
+<div id='mensaje' class='warning_message'>Constacias </div>
+ 
+<a href="javascript:;" title="Cerrar" onClick="toogle('none','modalizar','ventana')" >Close</a>
+<h2>Imprimir Constacias</h2>
+
+  <table border="0" cellpadding="1" cellspacing="1" width="100%" align="center" > 
+    <tr>
+		<td align="center" width="50%"  ><?php echo link_to_remote('Estudios',"update: mensaje", "action: reportes/con_est/$cedrep/$codigo/1"); ?></td>
+		<td align="center" width="50%" ><?php echo link_to_remote('Inscripción',"update: mensaje", "action: reportes/con_est/$cedrep/$codigo/2"); ?></td>
+	</tr>
+    <tr>
+		<td align="center" width="50%"  ><?php echo link_to_remote('Retiro',"update: mensaje", "action: reportes/con_est/$cedrep/$codigo/3"); ?></td>
+		<td align="center" width="50%" ><?php echo link_to_remote('Buena Conducta',"update: mensaje", "action: reportes/con_est/$cedrep/$codigo/4"); ?></td>
+	</tr>
+  </table>
+   
+    
+<?php echo end_form_tag() ?>
+</div>

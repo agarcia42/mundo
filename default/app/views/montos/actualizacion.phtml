@@ -1,0 +1,136 @@
+<?php $Concepto=load::model('concepto'); ?>
+<?php echo View::content() ?>
+
+<?php echo Ajax::form('page-wrapper', 'montos/actualizacion');  ?>
+                            <div class="box box-info">
+                                     <div class="box-header with-border">
+                                            <h4 class="page-head-line">Conceptos de Pago</h4>
+                                            <div class="row">
+                                            	<div class="col-md-4">
+                                                    <div class="form-group">
+                                                        <label for="codigo">Periodo</label>
+                                                         <?php echo Conesth::dbselect("codper","codper","periodo","",$codper,"form-control","montos/actualizacion"); ?>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <div class="form-group">
+                                                        <label for="codigo">Nivel</label>
+                                                         <?php echo Conesth::dbselect("codniv","desniv","nivel","",$codniv,"form-control","montos/actualizacion/".$codper); ?>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <div class="form-group">
+                                                        <label for="codigo">Tarifa</label>
+                                                         <?php echo Conesth::dbselect("codtar","destar","tarifa","where codniv='$codniv'",$codtar,"form-control","montos/actualizacion/".$codper."/".$codniv); ?>
+                                                    </div>
+                                                </div>
+                                                
+                                            </div>
+                                            <div class="row">
+                                            	<div class="col-md-4">
+                                                    <div class="form-group">
+                                                        <label for="codigo">Tipo</label>
+                                                         <?php echo Conesth::dbselect("codesq","desesq","esquema","",$codesq,"form-control","montos/actualizacion/".$codper."/".$codniv."/".$codtar); ?>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <div class="form-group">
+                                                        <label for="codigo">Concepto</label>
+                                                        <?php echo Conesth::dbselect("codcon","descon","concepto","where codniv='$codniv' and codtar='$codtar' and codesq='$codesq'",$codcon,"form-control","montos/actualizacion/".$codper."/".$codniv."/".$codtar."/".$codesq); ?>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <div class="form-group">
+                                                        <label for="descripcion">Monto</label>
+                                                        <?php echo form::text("montos", "class='form-control'  required",$montos); ?>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-12 pull-right">
+                                                    <?php echo form::hidden("monto.fecreg"); ?>
+                                                     <?php echo Form::submit('Guardar',"class='btn btn-info btn-lg pull-right' name='aceptar'") ?>
+                                                </div>
+                                            </div>
+                                    </div>
+                            </div>
+  
+<?php echo Form::close(); ?>
+
+
+<br />
+<br />
+<?php $pagina=Load::model('monto')->paginar($obser,$page,$perpage);  ?>
+
+<? if($pagina->total>0) { ?>
+<!-- MUESTRA LA PAGINA ACTUAL Y EL TOTAL DE PAGINAS -->
+
+<?php 
+/*if(!isset($show)) {
+    $show = 10;
+}
+    
+$half = (int)($show/2);
+//echo $halt;
+    
+
+if ($pagina->current <= $half) {
+    $start = 1;
+} elseif (($pagina->total_pages - $pagina->current)<$half) {
+    $start = $pagina->total_pages - $show + 1;
+} else {
+    $start = $pagina->current - $half;
+}
+*/?>
+
+<?php /*?><?php if($pagina->before) echo link_to_remote(img_tag('rewind.png','border: 0','title: anterior'),"update: area", "action: montos/actualizacion/{$codper}/{$codniv}/{$codtar}/{$codesq}/{$codcon}/{$accion}/{$pagina->before}"); ?>
+
+    <?php for($i=$start; $i<=$pagina->total_pages && $i<($start + $show); $i++): ?>
+        <?php echo $i==$pagina->current ? "<b>$i</b>" : link_to_remote($i,"update: area", "action: montos/actualizacion/{$codper}/{$codniv}/{$codtar}/{$codesq}/{$codcon}/{$accion}/$i"); ?>
+    <?php endfor; ?>
+
+<?php if($pagina->next) echo link_to_remote(img_tag('fast_forward.png', 'border: 0','title: siguiente'),"update: area", "action: montos/actualizacion/{$codper}/{$codniv}/{$codtar}/{$codesq}/{$codcon}/{$accion}/{$pagina->next}");?>  
+<br />
+<?php */?>
+<table class="table table-bordered table-striped table-hover">
+<thead>
+	<tr>
+        <th  align="left" >Nivel</th>
+        <th  align="left" >Tarifa</th>
+        <th  align="left" >Esquema</th>
+        <th  align="left" >Concepto</th>
+        <th  align="left" >Descripción</th>
+        <th  align="left" >Monto</th>
+        <th colspan='2'>-</th>
+	</tr>
+</thead>
+<tbody>	
+<? foreach($pagina->items as $paginas1): ?> 
+	<?php $c=$Concepto->find_first("codniv='$paginas1->codniv' and codtar='$paginas1->codtar' and codesq='$paginas1->codesq' and codcon='$paginas1->codcon'") ?>
+    <tr>
+        <td align="left" ><?php echo $paginas1->codniv ?></td>
+        <td align="left" ><?php echo $paginas1->codtar ?></td>
+        <td align="left" ><?php echo $paginas1->codesq ?></td>
+        <td align="left" ><?php echo $paginas1->codcon ?></td>
+        <td align="left" ><?php echo $c->descon ?></td>
+        <td align="left" ><?php echo $paginas1->monto ?></td>
+        <td align="center" ><?php echo Ajax::link('montos/actualizacion/'.$paginas1->codper.'/'.$paginas1->codniv.'/'.$paginas1->codtar.'/'.$paginas1->codesq.'/'.$paginas1->codcon.'/N/'.$pagina->current, Html::img('edit.gif', $alt='Modificar'), 'page-wrapper'); ?>
+</td>
+        <td align="center" ><?php echo Ajax::link('montos/actualizacion/'.$paginas1->codper.'/'.$paginas1->codniv.'/'.$paginas1->codtar.'/'.$paginas1->codesq.'/'.$paginas1->codcon.'/E/'.$pagina->current, Html::img('delete.gif', $alt='Modificar'), 'page-wrapper'); ?>
+	</tr>
+   <? endforeach ?>
+   </tbody>
+</table>
+
+
+<br />
+
+<table border="0" cellpadding="1" cellspacing="1" width="80%" align="center">
+<tr><td align="right">
+   <b>Pág.  </b><?php echo $pagina->current ?> de <?php echo $pagina->total ?>&nbsp;
+    </td></tr>
+</table>
+
+
+
+<? } ?>

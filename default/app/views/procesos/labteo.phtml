@@ -1,0 +1,39 @@
+<?php View::content() ?>
+<?php $numcar=$datos['numcar'];$codsed = $datos['codsed']; $codcar = $datos['codcar']; $tiphor = $datos['tiphor']; $numano=$datos['numano']; $numper=$datos['numper']; ?>
+
+      <?php $code=""; //se verifica el choque de horarios?>    
+      <?php $choque=Load::model('horario')->choque($numcar,$codcar,$codsed,$tiphor,$codmat,$codsec,$numano,$numper); ?>
+      <?php if($choque){ ?>
+         <?php foreach($choque as $c) { ?>
+            <?php $code.=$c->nommat." SEC ".$c->codsec."  "; ?>
+         <?php } ?>
+      <?php } ?>
+
+      <?php echo Conesth::uc_cursar($numcar,$codcar,$codsed,$tiphor,$numano,$numper,$codmat,$codsec,$name); ?>
+
+      <?php if($choque){ //se muestra las unidades curriculares con choque ?>
+        <div class="col-xs-12 col-md-12" >
+              <?php echo Flash::error("ERROR: EL HORARIO DE LA SECCIÓN (".$codsec.") COINCIDE CON ".$code); ?>
+              <?php Load::model('ceinse')->del($numcar,$codcar,$codsed,$tiphor,$numano,$numper,$codmat); ?>
+        </div>
+      <?php } ?>
+
+      <div class="col-xs-12 col-md-6 " id="horario<?php echo $codmat; ?>"> 
+          <?php //se mustra el horario de la materia/seción  seleccionada ?> 
+          <?php if(Load::model('horario')->verifica($codcar,$codsed,$tiphor,$numano,$numper,$codmat,$codsec)){ ?>         
+                <?php echo Conesth::horario($codcar,$codsed,$tiphor,$numano,$numper,$codmat,$codsec); ?>
+          <?php  }else{ ?>
+                <?php //echo Flash::error("Error: No existe horario de materia"); ?>
+                 <hr> 
+          <?php } ?>
+      </div>
+
+      <?php $x=0; //si no hay choque muestra el laboratorio de la unidad curricular?>
+      <?php $c=Load::model('cemacu')->todos_lab($numcar,$codcar,$codsed,$tiphor,$numano,$numper,$codmat); ?>
+			<?php if ($c and !$choque){ ?>
+        <div class='col-xs-12 col-md-12' id="<?php echo $c->codmat; ?>">
+           <?php echo Conesth::uc_cursar($numcar,$codcar,$codsed,$tiphor,$numano,$numper,$c->codmat,0,$name.$x); ?>
+        </div>
+      <?php } ?>
+      
+        

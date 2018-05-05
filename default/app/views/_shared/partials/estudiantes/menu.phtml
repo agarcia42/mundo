@@ -1,0 +1,64 @@
+<nav  class="navbar-default navbar-side" role="navigation">
+            <div class="sidebar-collapse">
+                <ul class="nav" id="main-menu">
+                    <li>
+                        <div class="user-img-div">
+                            <?php echo Html::img('logo.jpeg', $alt='User Image', "class='img-circle'"); ?>
+                        </div>
+
+                    </li>
+                    <li>
+                        <?php echo Ajax::link('mensaje/msg/', '<i class="fa fa-home "></i> Inicio', 'page-wrapper','active-menu'); ?>
+                    </li>
+                    <li>
+                        <a href="#"><i class="fa fa-group "></i>Principal <span class="fa arrow"></span></a>
+                         <ul class="nav nav-second-level">
+                            <li><?php echo Ajax::link('matricula/actualizacion', '<i class="fa fa-refresh "></i>Matricular', 'page-wrapper'); ?></li>
+                            <li><?php echo Ajax::link('periodo/actualizacion', '<i class="fa fa-user "></i>Periodo', 'page-wrapper'); ?></li>
+                            <li><?php echo Ajax::link('montos/actualizacion', '<i class="fa fa-pencil-square-o "></i>Monto de Pago', 'page-wrapper'); ?></li>
+                            <li><a href="#"><i class="fa fa-close "></i>Ingresos/Egresos</a></li>
+                            <li><?php echo Ajax::link('seccion/actualizacion', '<i class="fa fa-graduation-cap "></i>Seccion', 'page-wrapper'); ?></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="#"><i class="fa fa-print"></i>Reportes <span class="fa arrow"></span></a>
+                         <ul class="nav nav-second-level">
+                            <li><?php echo Ajax::link('reportes/tot_ing', '<i class="fa fa-credit-card "></i>Relación Ingresos/Egresos', 'page-wrapper'); ?></li>
+                            <li><?php echo Ajax::link('reportes/alumnosporseccion', '<i class="fa fa-cogs "></i>Alumno por Sección', 'page-wrapper'); ?></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="#"><i class="fa fa-sliders"></i>Parámetros <span class="fa arrow"></span></a>
+                         <ul class="nav nav-second-level">
+                            <li><?php echo Ajax::link('niveles/actualizacion', '<i class="fa fa-calendar "></i>Niveles', 'page-wrapper'); ?></li>
+                            <li><?php echo Ajax::link('tarifa/actualizacion', '<i class="fa fa-navicon "></i>Tarifas', 'page-wrapper'); ?></li>
+                            <li><?php echo Ajax::link('curso/actualizacion', '<i class="fa fa-graduation-cap "></i>Cursos', 'page-wrapper'); ?></li>
+                            <li>
+                                <a href="#"><i class="fa fa-random"></i>Conceptos <span class="fa arrow"></span></a>
+                                <ul class="nav nav-second-level">
+                                    <li><?php echo Ajax::link('conceptos/actualizacion', 'Pagos', 'page-wrapper'); ?></li>
+                                     <li><?php echo Ajax::link('ingresoegreso/actualizacion', 'Ingreso/Egresos', 'page-wrapper'); ?></li>
+                                </ul>
+                            </li>
+                            <li><?php echo Ajax::link('banco/actualizacion', '<i class="fa fa-list"></i>Bancos', 'page-wrapper'); ?></li>
+                            <!--<li><a href="#"><i class="fa fa-gear "></i>Generales</a></li>-->
+                            
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="#"><i class="fa fa-cogs"></i>Procesos <span class="fa arrow"></span></a>
+                         <ul class="nav nav-second-level">
+                            <li><?php echo Ajax::link('exportar/seccion', '<i class="fa fa-refresh "></i>Secciones', 'page-wrapper'); ?></li>
+                            <li><?php echo Ajax::link('exportar/tarifa', '<i class="fa fa-refresh "></i>Tarifas', 'page-wrapper'); ?></li>
+                        </ul>
+                    </li>
+                    
+                    
+                    <li>
+                        <?php echo Html::link("", "<i class='fa fa-sign-out'></i> Cerrar Sesión"); ?>
+                    </li>
+                   
+                </ul>
+            </div>
+
+        </nav>

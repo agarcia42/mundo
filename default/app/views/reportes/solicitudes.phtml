@@ -1,0 +1,95 @@
+<?php echo View::content(); ?>
+<?php echo Conesth::ruta('Solicitudes/Constancias') ?>
+
+<?php $datos  = Session::get('su'); ?>
+<?php $numcar = $datos['numcar']; $codcar = $datos['codcar']; $codsed = $datos['codsed']; $tiphor = $datos['tiphor']; $condac = $datos['condac'];  ?>
+<div style="margin-left: 5px; margin-right: 5px;" align="left">
+
+<?php $fecreg=date("Y-m-d"); $c=0;?>
+<?php foreach(Load::model('cepoin')->find("conditions: codcar='$codcar' and codsed='$codsed' and tiphor='$tiphor'","order: codcar") as $cepoin): ?>
+	<?php if ($condac!="GR"){ ?>
+		<?php if ($cepoin->stasol==1){ ?>
+					<?php //if(date("w")=="1" or date("w")=="2" or $tiphor=='MS') { ?>
+							<?php $y=0; ?>
+							<br />
+							<?php $x=0; ?>
+							<section class="content"> 
+            					<div class="box box-default">
+           							<div class="box-header with-border">
+                  						<div class="row">
+                        				  	<div class="col-xs-12 col-md-8"> 
+                           						<h3 class="box-title">  Constancia</h3></div>
+                          					<div class="col-xs-6 col-md-2 " align="center">
+                            					<h3 class="box-title"> Error </h3></div>
+                        					<div class="col-xs-6 col-md-2" align="center">
+                            					<h3 class="box-title"> Acción</h3>
+                          					</div>
+                  						</div>
+              						</div>
+               <!-- Lista de Asignaturas -->
+              					<div class="box-body box-profile">
+
+								<?php echo Ajax::form('page-wrapper', 'reportes/solicitudes');  ?>
+				
+							    <?php $x=0; ?>
+  								<?php foreach(Load::model('cedsol')->find("order: id") as $cedsol): ?>
+  									<?php if (($cedsol->id!=6) and ($cedsol->id!=7))
+  											{ ?> 
+  											<div class="row">
+  												<div class="col-xs-12 col-md-8"> <?php echo $cedsol->dessol ?> </div>
+  												<div class="col-xs-6 col-md-2 " align="center">
+  													<?php 
+												    if($cedsol->id==1 or $cedsol->id==2)
+												    		{
+															if(!Load::model('ceinse')->find_first("numcar='$numcar' and codcar='$codcar' and codsed='$codsed' and tiphor='$tiphor' and indins like 'I%'"))
+																	{$coderr="Error: No tiene materias inscritas en el periodo actual";}
+															else
+																	{$coderr="0";}
+															}
+													else
+															{
+															if(!Load::model('cehmtc')->find_first("numcar='$numcar' and codcar='$codcar'"))
+																	{$coderr="Error: No se han cargado materias en su historial";}
+															else
+																	{$coderr="0";}
+															} ?>
+													<?php if($coderr!="0")
+															{ 
+															echo Html::img('delete.gif','estudiante', "class= 'cssWLIDLogo16'", 'title: '.$coderr); 	
+															} ?>
+  												</div>
+  												<div class="col-xs-6 col-md-2 " align="center">
+  													<?php if($coderr=="0"){ ?>
+														<?php $nombre_control = 'codcon'.$x; ?>
+														<?php $nombre_check   = 'tipo'.$x; ?>
+														<?php echo Form::check('tipo'.$x, "value: 1"); ?>
+														<input name="<?php echo $nombre_control;?>" type='hidden' value="<?php echo $cedsol->id; ?>"> 
+												<?php } else {?>
+													 <?php echo "-"; } ?>
+  												</div>
+  											</div>
+   											<?php $x++; ?>
+   									  <?php } ?>
+                                <?php endforeach; ?>
+
+               					<input name="l" type='hidden' size='6' value="<?php echo $x; ?>">
+               					<?php echo Form::hidden("coimes.codcon", NULL,$x) ?>
+               					<hr>
+               					<div class="col-xs-12 col-md-12"> <input type="submit" name='imprimir' value='Imprimir'  id='imprimir'> </div>		
+  								</div>
+  								</div>
+  						</section>
+						<?php echo Form::close() ?>
+					   <?php /*} else { ?>
+								<div align="center"><?php Flash::error("La Solicitud de Constancias solo se realiza los días Lunes y Martes"); ?></div>
+					   <?php } */?>
+				
+			<?php } else { ?>
+				<div align="center"><?php Flash::error("Solicitudes de Constancia para este Programa ha Sido Cerrado"); ?></div>
+			<?php } ?>
+<?php } else { ?>
+<div align="center"><?php Flash::error("Solicitudes de Constancia para Egresados es por la taquilla del Rectorado"); ?>
+<?php Flash::notice("Solicite su Constancia Directamente en Control de Estudios Sede Rectorado"); ?></div>
+<?php } ?>
+<?php endforeach; ?>
+</div>

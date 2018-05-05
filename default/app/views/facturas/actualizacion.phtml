@@ -1,0 +1,241 @@
+<?php //echo View::helpers('miHelpers'); ?>
+
+<?php 
+$Detalle = Load::model('detalle'); 
+$Banco = Load::model('bancos'); 
+$Factura = Load::model('factura'); 
+?>
+
+
+<?php echo View::content() ?>
+
+<?php $pagar=$Detalle->Sum("mondet","conditions: cedrep='$cedrep' and stafac='F'")?>
+<?php $fact=$Detalle->find_first("cedrep='$cedrep' and stafac='F'")?>
+<?php if ($fact){ ?>
+
+
+<?php echo Ajax::form('contenedor', 'facturas/actualizacion');  ?>
+
+<div class="box box-info">
+  <div class="box-header with-border">
+    <div class="col-md-6">
+     <h3>Monto de la Factura</h3>
+     </div>
+     <div class="col-md-6"><h3 class="pull-right">Factura N° <?php echo $fact->numfact ?></h3>
+     </div>
+
+      <?php echo form::hidden("nrofact", "class='form-control'",$fact->numfact); ?><?php echo form::hidden("factura.nunmfact", "class='form-control'",$fact->numfact); ?>
+    <div class="col-md-6">
+      <div class="form-group">
+         <?php echo form::text("pagar", "class='form-control'  readonly='true'",$pagar); ?>
+      </div>
+    </div>
+    <div class="col-md-6">
+        <div class="form-group">
+            <?php $fecdet=date("d-m-Y",strtotime($fact->fecreg)) ?>
+            <?php echo form::text("fecfac", "class='form-control' placeholder='dia-mes-año'",$fecdet); ?>
+        </div>
+    </div>
+  </div>
+
+  <div class="box-body">
+    <div class="table-responsive">
+            <div class="row">
+                  <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="cedula">Nombre.: <a1 data-toggle="modal" href="#myModal" class="btn btn-primary">Datos Factura</a1></label>
+                            <?php echo form::text("descri", "class='form-control' readonly='true'",$nombre); ?>
+                       </div>
+                  </div>
+                 
+
+            <div id="myModal" class="modal fade in">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+
+                            <div class="modal-header">
+                                <a1 class="btn btn-default1" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span></a1>
+                                <h4 class="modal-title">Datos de la Factura</h4>
+                            </div>
+                            <div class="modal-body">
+                                <div class="row">
+                  <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="cedula">Rif-CI.:<?php echo form::hidden("cedrep", "",$cedrep); ?></label>
+                             <?php echo form::text("cedula", "class='form-control'",$cedula); ?>
+                        </div>
+                  </div>
+                 <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="cedula">Nombre.:</label>
+                            <?php echo form::text("nombre", "class='form-control'  onchange='cambiar()'",$nombre); ?>
+                       </div>
+                  </div>
+            </div>
+            <div class="row">
+                  <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="apellidos">Dirección</label>
+                            <?php echo form::text("direccion", "class='form-control'",$direccion); ?>
+                        </div>
+                  </div>
+                  <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="nombres">Teléfono</label>
+                             <?php echo form::text("telefono", "class='form-control'",$telefono); ?>
+                        </div>
+                  </div>
+           </div>
+                            </div>
+                            <div class="modal-footer">
+                                <div class="btn-group">
+                                    <button class="btn btn-danger" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span> Cerrar</button>
+                                </div>
+                            </div>
+
+                        </div><!-- /.modal-content -->
+                    </div><!-- /.modal-dalog -->
+            </div><!-- /.modal -->
+
+            </div>
+
+
+
+
+            
+
+                      <div class="panel-heading">
+                        <!-- Tabs -->
+                        <ul class="nav panel-tabs1">
+                          <li class="active"><a href="#tab1" data-toggle="tab">Efectivo</a></li>
+                          <li><a href="#tab2" data-toggle="tab">Debito</a></li>
+                          <li><a href="#tab3" data-toggle="tab">Deposito</a></li>
+                          <li><a href="#tab4" data-toggle="tab">Cheque</a></li>
+                        </ul>
+                   
+                      </div>
+                      <div class="panel-body">
+                        <div class="tab-content">
+                          <div class="tab-pane active" id="tab1">
+                          <div class="row">
+                            <div class="col-md-12">
+                              <div class="form-group">
+                                <label for="apellidos">Monto:</label>
+                                <?php echo form::text("efe", "class='form-control' onchange='suma()'",$efe); ?>
+                              </div>
+                            </div>
+                          </div>
+                          </div>
+                          <div class="tab-pane" id="tab2">
+                                 <div class="row">
+                            <div class="col-md-12">
+                              <div class="form-group">
+                                <label for="apellidos">Monto:</label>
+                                <?php echo form::text("deb", "class='form-control' onchange='suma()'",$deb); ?>
+                              </div>
+                            </div>
+                            <div class="col-md-6">
+                              <div class="form-group">
+                                  <label for="nombres">Nro. Deb.</label>
+                                   <?php echo form::text("nrodeb", "class='form-control'",$nrodeb); ?>
+                              </div>
+                            </div>
+                          </div>
+                          </div>
+                          <div class="tab-pane" id="tab3">
+                                 <div class="row">
+                            <div class="col-md-12">
+                              <div class="form-group">
+                                <label for="apellidos">Monto:</label>
+                                <?php echo form::text("dep", "class='form-control' onchange='suma()'",$dep); ?>
+                              </div>
+                            </div>
+                            <div class="col-md-6">
+                              <div class="form-group">
+                                  <label for="nombres">Nro. Deposito</label>
+                                   <?php echo form::text("nrodep", "class='form-control'",$nrodep); ?>
+                                   <select id="bandep" name="bandep" class="form-control">
+            <option value="0">Deposito...</option>
+            <?php foreach($Banco->find("status='S'") as $bd): ?>
+            <?php if($bandep==$bd->id){ ?>
+            <option value="<?php echo $bd->id; ?>" selected="selected"><?php echo $bd->desban; ?></option>
+            <?php }else{ ?>
+            <option value="<?php echo $bd->id; ?>"><?php echo $bd->desban; ?></option>
+            <? } ?>
+            <?php endforeach; ?>
+        </select>
+                              </div>
+                            </div>
+                          </div>
+                          </div>
+                          <div class="tab-pane" id="tab4">
+                                 <div class="row">
+                            <div class="col-md-12">
+                              <div class="form-group">
+                                <label for="apellidos">Monto:</label>
+                                <?php echo form::text("che", "class='form-control' onchange='suma()'",$che); ?>
+                              </div>
+                            </div>
+                            <div class="col-md-6">
+                              <div class="form-group">
+                                  <label for="nombres">Nro de Cheque</label>
+                                   <?php echo form::text("nroche", "class='form-control'",$nroche); ?>
+                                   <select id="banche"  name="banche" class='form-control'>
+         <option value="0">Cheque/Transf...</option>
+         <?php foreach($Banco->find() as $bc): ?>
+              <?php if($banche==$bc->id){ ?> 
+                <option value="<?php echo $bc->id; ?>" selected="selected"><?php echo $bc->desban; ?></option>
+              <?php }else{ ?>
+               <option value="<?php echo $bc->id; ?>"><?php echo $bc->desban; ?></option>
+              <? } ?>
+         <?php endforeach; ?>
+         </select>
+                              </div>
+                            </div>
+                          </div>
+                          </div>
+                      </div>
+                     </div>
+
+<div class="box-header with-border">
+    <div class="col-md-6">
+      <h3> Total a Cancelar:</h3>
+    </div>
+    <div class="col-md-6">
+      <?php echo form::text("total", "class='form-control readonly='true'",$total); ?>
+    </div>
+    <div class="col-md-12"><?php echo Form::submit('Guardar',"class='btn btn-info btn-lg pull-right' name='aceptar'") ?></div>
+</div>
+
+<br>
+</div>
+</div>
+</div>
+<?php echo Form::close(); ?>
+
+<? }else{ ?>
+<?php Flash::notice("Facturas");?>
+<br />
+ <table class="table table-bordered table-striped table-hover">
+ <tr>
+ <td width="25%" align="center">Número</td>
+ <td width="25%" align="center">Monto</td>
+ <td width="25%" align="center">Fecha</td>
+ <td width="25%" align="center" colspan="2">Acción</td>
+
+ </tr>
+  <?php foreach($Factura->find("cedfac='$cedula'","order: numfact desc") as $fac): ?>
+ <tr>
+ <td  align="center"><?php echo $fac->numfact; ?></td>
+ <td  align="center"><?php echo $fac->monfac; ?></td>
+ <td  align="center"><?php echo $fac->fecfac; ?></td>
+ <td  align="center">Imprimir</td>
+ <td  align="center">Anular</td>
+
+ </tr>
+  <?php endforeach; ?>
+
+ </table>
+ <br />
+<?php } ?>
+

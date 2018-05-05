@@ -1,0 +1,2 @@
+undefined
+a:4:{i:0;a:5:{s:5:"Field";s:6:"estciv";s:4:"Type";s:7:"varchar";s:4:"Null";s:2:"NO";s:3:"Key";s:3:"PRI";s:7:"Default";N;}i:1;a:5:{s:5:"Field";s:6:"desciv";s:4:"Type";s:7:"varchar";s:4:"Null";s:2:"NO";s:3:"Key";s:0:"";s:7:"Default";N;}i:2;a:5:{s:5:"Field";s:6:"fecreg";s:4:"Type";s:4:"date";s:4:"Null";s:2:"NO";s:3:"Key";s:0:"";s:7:"Default";N;}i:3;a:5:{s:5:"Field";s:6:"nomuse";s:4:"Type";s:7:"varchar";s:4:"Null";s:2:"NO";s:3:"Key";s:0:"";s:7:"Default";N;}}

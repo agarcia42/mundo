@@ -1,0 +1,81 @@
+<?php View::content() ?>
+<?php //$letoca=Load::model('cepoin')->le_toca($datos['possrt'],'stains'); ?>
+<?php echo Conesth::ruta('Procesos/Inscripción') ?>
+
+<?php if($letoca) { ?>
+      <?php echo Ajax::form('page-wrapper', 'procesos/inscripcion');  ?>
+      <?php if (Load::model('cemacu')->uno($numcar,$codcar,$codsed,$tiphor,$numano,$numper)) { ?>
+      <section class="content"> 
+            <div class="box box-default">
+              <div class="box-header with-border">
+                  <div class="row">
+                          <div class="col-xs-12 col-md-8"> 
+                            <h3 class="box-title">  Asignatura(s) Ofertada(s)</h3></div>
+                          <div class="col-xs-6 col-md-2 " align="center">
+                            <h3 class="box-title"> U.C </h3></div>
+                          <div class="col-xs-6 col-md-2" align="center">
+                            <h3 class="box-title"> Sección</h3>
+                          </div>
+                  </div>
+              </div>
+               <!-- Lista de Asignaturas -->
+              <div class="box-body box-profile" >
+              <?php $x=0; ?>
+              <?php foreach(Load::model('cemacu')->todos_te($numcar,$codcar,$codsed,$tiphor,$numano,$numper) as $c) { ?>
+                    <div class='row' id="<?php echo $c->codmat; ?>">
+                    <?php echo Conesth::uc_cursar($numcar,$codcar,$codsed,$tiphor,$numano,$numper,$c->codmat,NULL,'codsec'.$x); ?>
+                       
+                            <?php $error=load::model('cerror')->selecciona($c->inderr); ?> 
+                            <?php if($error) { ?>
+                                <div class="col-xs-12 col-md-12" >
+                                   <?php echo flash::error("$error");  ?>
+                                </div>             
+                            <?php } ?>
+                    </div>
+                    <hr>
+                <?php $x++; ?>
+                <?php } ?> 
+                <?php echo Form::hidden("cecen.numcre".$x, NULL,$x) ?>
+                <p class="pull-right">
+                     <?php echo Form::submit('Inscribir',"class='btn btn-info btn-lg pull-right' name='aceptar'"); ?>
+                </p>
+                      
+              </div>
+            </div>    
+      </section><!-- /.content -->
+      <?php }else{ ?>
+             <div align="center"><?php echo Flash::warning("No se ha Generado Unidades Curriculares a Cursar"); ?></div>
+      <?php } ?>
+      <br>
+      <?php echo Form::close(); ?>
+
+<?php } ?>
+      <section class="content"> 
+            <div class="box box-default">
+              <div class="box-header with-border">
+                  <div class="row">
+                          <div class="col-xs-12 col-md-7"> 
+                            <h3 class="box-title"> Asignatura(s) Inscrita(s)</h3></div>
+                          <div class="col-xs-4 col-md-1 " align="center">
+                            <h3 class="box-title"> U.C </h3></div>
+                          <div class="col-xs-4 col-md-2" align="center">
+                            <h3 class="box-title"> Sección</h3>
+                          </div>
+                          <div class="col-xs-4 col-md-2" align="center">
+                            <h3 class="box-title"> Acción</h3>
+                          </div>
+                  </div>
+              </div>
+               <!-- Lista de Asignaturas -->
+              <div class="box-body box-profile">
+                    <?php echo View::partial('inscripcion/inscritas') ?>
+              </div>
+            </div>    
+      </section><!-- /.content -->
+    
+
+
+
+
+
+     

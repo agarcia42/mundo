@@ -1,0 +1,16 @@
+<?php echo View::content(); ?>
+<br>
+<div class="col-xs-6 col-md-6" align="right">
+	<strong>Parroquia.:</strong>	
+</div>
+<div class="col-xs-6 col-md-6" align="left">
+	<select name='parroquia' id='parroquia' class="form-control" style="width:250px" required>
+		<option value="">Seleccione Uno..</option>
+		<?php foreach(Load::model('parroquia')->find("id_entidad||'0'||id_municipio='$municipio_id'") as $parroq) { ?>
+			<option value="<?php echo $parroq->id; ?>"><?php echo $parroq->parroquia; ?></option>
+		<?php } ?>
+	</select>
+</div>
+<!--<hr>
+-->
+<?php echo Tag::js("jquery/conest"); ?>  

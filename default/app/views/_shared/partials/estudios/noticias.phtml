@@ -1,0 +1,97 @@
+<?php $Cetabs = Load::model('cetabs'); ?>
+<?php $Cenoti = Load::model('cenoti'); ?>
+
+<?php foreach($Cetabs->find("conditions: id!=0") as $c) { 
+		if($c->id==1) { $class="tab-pane fade in active"; } else { $class="tab-pane fade in"; }  ?>
+       	<div class="<?php echo $class; ?>" aria-hidden="false" role="tabpanel" id="<?php echo $c->tabref; ?>">
+       		<div class="col-xs-12 col-sm-12 col-md-7 col-lg-7">
+           		<ul class="link-list">
+               		<?php $x=0; ?>
+					<?php foreach($Cenoti->find("conditions: idtab=$c->id","order: fecreg desc") as $n) { ?>
+                   		<?php if($x<4) { ?>
+                          	<li>
+                   	    		<h3 class="epsilon"><?php echo Html::link("noticias/actualizacion/$n->idnot", $n->titnot); ?>
+                       	    	<?php /*?><a href="#<?php echo $n->enlace; ?>"><?php echo $n->noticia; ?></a><?php */?>
+                           		</h3>
+                       		</li>
+						<?php $x++; } ?>
+					<?php } ?>
+              	</ul>
+       		</div>
+       	</div>	
+<?php } ?>
+                             
+                             <!--
+                    <div class="tab-pane fade in active" aria-hidden="false" role="tabpanel" id="graduaciones">
+                        
+                           <div class="col-xs-12 col-sm-12 col-md-7 col-lg-7">
+                            <ul class="link-list">
+                                <li>
+                                  <h3 class="epsilon"><a href="noticias.html">Área de Graduaciones Unefm convoca  a censo para Taller de Realidades Comunitarias </a></h3>
+                                </li>
+
+                                <li>
+                                  <h3 class="epsilon"><a href="#">Unefm renovará convenios con municipios de Falcón </a></h3>
+                                </li>
+
+                                <li>
+                                  <h3 class="epsilon"><a href="#">Inicia proceso de inscripción del primer módulo de la Maestría en Gerencia Pública </a>                </h3>
+                                </li>
+                                <li>
+                                  <h3 class="epsilon"><a href="#">Abren Censo de licenciatura en Gerontología modalidad ADI </a></h3>
+                                </li>
+                            </ul>
+
+                                 <p class="align-right"><a href="#" class="btn2 btn-plain">Mas Noticias de UNEFM HOY</a></p>
+                            </div>
+                  	</div>
+					
+                    
+                  	<div class="tab-pane fade in" aria-hidden="false" role="tabpanel" id="tecnologia">
+                        
+                           <div class=" col-xs-12 col-sm-12 col-md-7 col-lg-7">
+                            <ul class="link-list">
+                                <li>
+                                  <h3 class="epsilon"><a href="#">Área de TECNOLOGÍA Unefm convoca  a censo para Taller de Realidades Comunitarias </a></h3>
+                                </li>
+
+                                <li>
+                                  <h3 class="epsilon"><a href="#">Unefm renovará convenios con municipios de Falcón </a></h3>
+                                </li>
+
+                                <li>
+                                  <h3 class="epsilon"><a href="#">Inicia proceso de inscripción del primer módulo de la Maestría en Gerencia Pública </a>                </h3>
+                                </li>
+                                <li>
+                                  <h3 class="epsilon"><a href="#">Abren Censo de licenciatura en Gerontología modalidad ADI </a></h3>
+                                </li>
+                            </ul>
+
+                                 <p class="align-right"><a href="#" class="btn2 btn-plain">Mas Noticias de UNEFM HOY</a></p>
+                            </div>
+                  	</div>
+
+                  	<div class="tab-pane fade in" aria-hidden="false" role="tabpanel" id="educacion">
+                        
+                           <div class=" col-xs-12 col-sm-12 col-md-7 col-lg-7">
+                            <ul class="link-list">
+                                <li>
+                                  <h3 class="epsilon"><a href="#">Área de EDUCACIÓN Unefm convoca  a censo para Taller de Realidades Comunitarias </a></h3>
+                                </li>
+
+                                <li>
+                                  <h3 class="epsilon"><a href="#">Unefm renovará convenios con municipios de Falcón </a></h3>
+                                </li>
+
+                                <li>
+                                  <h3 class="epsilon"><a href="#">Inicia proceso de inscripción del primer módulo de la Maestría en Gerencia Pública </a>                </h3>
+                                </li>
+                                <li>
+                                  <h3 class="epsilon"><a href="#">Abren Censo de licenciatura en Gerontología modalidad ADI </a></h3>
+                                </li>
+                            </ul>
+
+                                 <p class="align-right"><a href="#" class="btn2 btn-plain color">Mas Noticias de UNEFM HOY</a></p>
+                            </div>
+                  	</div>
+            </div>

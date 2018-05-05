@@ -1,0 +1,61 @@
+<?php $datos = Session::get('su'); $numced=$datos['numced']?>
+<?php $ceprof=Load::model('ceprof')->find_first("numced='$numced'"); ?>
+     
+			<ul class="nav navbar-top-links navbar-right">
+                <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                        <i class="fa fa-envelope fa-fw" title="mensaje"></i>  <i class="fa fa-caret-down"></i>
+                    </a>
+                    <ul class="dropdown-menu dropdown-messages">
+                        <li>
+                            <a href="#">
+                                <div>
+                                    <strong>John Smith</strong>
+                                    <span class="pull-right text-muted">
+                                        <em>Yesterday</em>
+                                    </span>
+                                </div>
+                                <div>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque eleifend...</div>
+                            </a>
+                        </li>
+                        <li class="divider"></li>
+                        <li>
+                            <a class="text-center" href="#">
+                                <strong>Read All Messages</strong>
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+                        </li>
+                    </ul>
+                    <!-- /.dropdown-messages -->
+                </li>
+                <!-- /.dropdown -->
+                
+               <li class="dropdown user user-menu">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                  <?php echo Html::img('estudiante/user2-160x160.jpg', $alt='User Image', "class='user-image'"); ?>
+                  <span> <?php echo $ceprof->nomprf.', '.$ceprof->apeprf; ?></span>
+                </a>
+                <ul class="dropdown-menu">
+                  <!-- User image -->
+                  <li class="user-header">
+                  <?php echo Html::img('estudiante/user2-160x160.jpg', $alt='User Image', "class='img-circle'"); ?>
+                    <p>
+                     <?php echo $ceprof->nomprf.', '.$ceprof->apeprf; ?>
+                    </p></li>
+                  <!-- Menu Body -->
+                  
+                  <!-- Menu Footer-->
+                  <li class="user-footer">
+                    <div class="pull-left">
+                      <a href="#" class="btn btn-default btn-flat">Configuración</a>
+                    </div>
+                    <div class="pull-right">
+                    	<?php echo Html::link("", "Salir", "class='btn btn-default btn-flat'"); ?>
+                    </div>
+                  </li>
+                </ul>
+              </li>
+                   
+                    <!-- /.dropdown-user -->
+                <!-- /.dropdown -->
+            </ul>

@@ -1,0 +1,85 @@
+<?php echo View::content() ?>
+<?php echo Conesth::ruta('Perfil/Finiquito') ?>
+
+<section class="content"> 
+   <div class="box box-default">
+      <div class="box-header with-border">
+         <div class="row">
+            <div class="col-xs-8 col-md-6"> 
+               <h3 class="box-title"> Descripción de Asignatura</h3></div>
+            <div class="col-xs-2 col-md-2 hidden-xs">
+               <h3 class="box-title"> U.C.</h3></div>
+            <div class="col-xs-2 col-md-2" align="right">
+               <h3 class="box-title"> Nota</h3></div>
+            <div class="col-xs-2 col-md-2" align="right">
+               <h3 class="box-title"> Ind.</h3></div>
+            </div>
+               <!-- Lista de Asignaturas -->
+      <div class="box-body box-profile">
+        <?php $x=0; ?> 
+        <?php foreach(load::model('ceplnp')->find_all_by_sql("select * from ceepln a,ceplnp b where a.codcar=b.codcar and a.codmat=b.codmat and a.codpln=b.codpln and a.codcar='$codcar' and a.codpln='$codpln' and b.tiphor='$tiphor' and a.conmat in('D','O')  and a.codmat not like '%L' order by b.secper") as $c): ?>
+           <?php $cem=load::model('cemmat')->busca_uno($c->codcar,$c->codmat); ?>
+         <div class="row">
+           <div class="col-xs-8 col-md-6"> 
+               <?php echo '  '.$c->codmat.'-'.$cem->nommat; ?></div>
+           <div class="col-xs-2 col-md-2 hidden-xs">
+               <?php echo $c->numcre; ?>
+           </div>
+           <?php if ($cehmtc=load::model('cehmtc')->find_first("numcar='$numcar' and codcar='$codcar' and codmat='$c->codmat' and indnrp in('AP','EQ')")){ ?>
+           <div class="col-xs-2 col-md-2" align="right">
+                <?php echo $cehmtc->notper ?>
+           </div>
+           <div class="col-xs-2 col-md-2" align="right">
+                <?php echo $cehmtc->indmat ?>
+           </div>
+           <?php }else{ ?>
+           <div class="col-xs-2 col-md-2" align="right">
+                
+           </div>
+           <div class="col-xs-2 col-md-2" align="right">
+                
+           </div>
+           <?php } ?>
+          </div>
+          <hr>
+   	 <?php if($c->conmat=='D'){ ?>
+        <?php $x++; ?>
+     <?php } ?>
+  
+  <?php endforeach; ?>
+  <?php $y=0; ?>
+  <div class="row">
+           <div class="col-xs-12 col-md-12"> 
+               <b>Total Electiva a Cursar <?php echo $x ?></b>
+            </div>
+  </div>
+   <?php foreach(load::model('cehmtc')->find("numcar='$numcar' and codcar='$codcar' and indnrp in('AP','EQ') and codmat in(select codmat from ceepln where codcar='$codcar' and codpln='$codpln' and conmat in('E'))","order: codmat asc") as $c): ?>
+     <div class="row">
+          <div class="col-xs-8 col-md-6"> 
+               <?php echo $c->codmat.'-'.$c->nommat; ?>
+           </div>
+           <div class="col-xs-2 col-md-2 hidden-xs">
+               <?php echo $c->numcre; ?>
+           </div>
+           <div class="col-xs-2 col-md-2" align="right">
+                <?php echo $c->notper ?>
+           </div>
+           <div class="col-xs-2 col-md-2" align="right">
+                <?php echo $c->indmat ?>
+           </div>
+      </div>
+     <?php $y++; ?>
+  <?php endforeach; ?>
+  <?php for($i=$y;$i<$x;$i++ ){ ?>
+      <div class="row">
+          <div class="col-xs-12 col-md-6"> 
+               ELECTIVA <?php echo $i+1; ?>
+           </div>
+      </div>
+  <?php } ?>
+
+  </div>
+  </div>    
+  </section><!-- /.content -->
+
+

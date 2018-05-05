@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>Conest2 - Pequeño Mundo</title>
+    <?php Tag::css('bootstrap') ?>
+	<?php Tag::css('font-awesome/skins/font-awesome') ?>
+    <?php Tag::css('style') ?>
+    <?php //Tag::css('exception') ?>
+	<?php Tag::css('AdminLTE') ?>	
+	<?php Tag::css('ionicons') ?>
+    <?php Tag::css('styles') ?>
+
+    <?php echo Html::includeCss() ?>
+    <?php echo Tag::js('js/dist/jquery.min'); ?>
+   	<?php echo Tag::js('jquery/jquery.kumbiaphp'); ?>
+    <?php echo Tag::js('jquery/jquery.kumbiaphp.min'); ?>
+</head>
+
+<body>
+
+    <div id="wrapper">
+        <?php echo View::partial('estudiantes/header') ?>
+        <?php echo View::partial('estudiantes/menu') ?>
+    
+        <div id="page-wrapper" class="page-wrapper-cls">
+				<?php View::content() ?>
+
+        </div>
+        <!-- /#page-wrapper -->
+         <?php echo View::partial('estudiantes/footer') ?>
+    
+    <?php echo Tag::js('js/bootstrap.min'); ?>
+    <?php echo Tag::js('js/metisMenu.min'); ?>
+    <?php echo Tag::js('js/custom'); ?>
+    <?php echo Tag::js('js/jquery.slimscroll.min'); ?>
+    <?php echo Tag::js('js/app.min'); ?>
+    </div>
+    <!-- /#wrapper -->
+
+</body>
+

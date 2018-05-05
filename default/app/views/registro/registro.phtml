@@ -1,0 +1,190 @@
+   <br><br> 
+  <div class="col-xs-12 col-sm-12" align="center">
+	<div class="page-header">
+  	<h1>Registro Sistema de Control de Estudios UNEFM</h1>
+    Por Favor, <strong>Confirma que tus Datos Personales sean los Correctos</strong><br />
+    Recuerda Suministrar Datos Verdaderos, ya que los mismos serán verificados.<br />
+		  Bienvenido(a) Usted ha Sido Asignado(a) al Programa:  
+			<b><?php $cecar=Load::model('cecar')->find_first("codcar='$cees->codcar'"); 
+				echo $cecar->nomlar; ?></b><br>
+	</div>
+	
+<?php if($cees->control==0) { ?>
+<?php echo Ajax::form("conte", "registro/registro"); ?>
+
+  <section >
+      <div>
+              <div class="row ">
+                        <div class="col-xs-6 col-md-6" align="right"><b>C.I./Pasaporte: </b></div>
+                        <div class="col-xs-6 col-md-6" align="left"><?php echo $numced; ?>
+                        <input name="numced" type="hidden" value="<?php echo $numced; ?>" />
+                        <input name="correo1" type="hidden" value="<?php echo $email; ?>" />
+                        </div>
+              </div>
+                        <br>
+              <div class="row ">
+        				        <div class="col-xs-6 col-md-6" align="right"><b>Nombre Completo:</b> </div>
+                        <div class="col-xs-6 col-md-6" align="left"><?php echo $cees->nomest." ".$cees->apeest; ?></div>
+              </div>
+                        <br>
+   						<div class="row ">
+                        <div class="col-xs-6 col-md-6" align="right"><b>¿Están Correctos tus Nombres y Apellidos?</b></div>
+                        <div class="col-xs-6 col-md-6" align="left">
+                            <select name="correcto" id="correcto" class="form-control" style="width:150px" onchange="getcorreccion(this)" required>
+		  						          <option value="">Seleccione...</option>
+		  						          <option value="1">Sí</option>
+                    			  <option value="2">No</option> 
+		  					           </select>
+                        </div>
+            </div>
+                        <br>
+            <div class="row ">           
+                        <div id="corregir"></div>
+            </div>
+						            <br>
+            <div class="row ">
+                        <div class="col-xs-6 col-md-6" align="right"><b>Sexo:</b></div>
+                        <div class="col-xs-6 col-md-6" align="left">
+				            <select name="codsex" id="codsex" class="form-control" style="width:150px" required>
+		  						<option value="">Seleccione...</option>
+		  						<option value="M">Masculino</option>
+                    			<option value="F">Femenino</option> 
+		  					</select>
+                		</div>
+            </div>
+            <div class="row ">
+                        <div class="col-xs-6 col-md-6" align="right"><b>Estado Civil:</b> </div>
+                        <div class="col-xs-6 col-md-6" align="left">
+            				<select name="estciv" id="estciv" class="form-control" style="width:150px" required>
+		  						<option value="">Seleccione...</option>
+		  						<option value="S">Soltero(a)</option>
+                				<option value="C">Casado(a)</option> 
+                				<option value="D">Divorciado(a)</option> 
+                				<option value="V">Viudo(a)</option> 
+		  					</select>
+                        </div>
+            </div>
+            <div class="row ">
+                        <div class="col-xs-6 col-md-6" align="right"><b>Nacionalidad:</b></div>
+                        <div class="col-xs-6 col-md-6" align="left">
+            				<select name="idnac" id="idnac" class="form-control" style="width:150px" required>
+		  						<option value="">Seleccione...</option>
+		  						<?php foreach(Load::model('nacionalidades')->find('order: id ASC') as $p): ?>
+		  							<option value="<?php echo $p->id; ?>"><?php echo $p->desnac; ?></option> 
+		  						<?php endforeach; ?>	  	
+		  					</select>
+                        </div>
+          </div>
+          <div class="row ">
+                		<div class="col-xs-6 col-md-6" align="right"><b>Etnia:</b> </div>
+                        <div class="col-xs-6 col-md-6" align="left">
+				            <select name="etnia" id="etnia" class="form-control"  style="width:150px" required>
+		  						<option value="">Seleccione...</option>
+		  						<?php foreach(Load::model('ceetnias')->find('order: id ASC') as $p): ?>
+                                	<?php if($p->id==2){ ?>
+                                    	<option value="<?php echo $p->id; ?>" selected="selected"><?php echo $p->etnias; ?></option> 
+                                    <?php } else { ?>
+		  								<option value="<?php echo $p->id; ?>"><?php echo $p->etnias; ?></option> 
+                                    <?php } ?>
+		  						<?php endforeach; ?>	  	
+		  					</select>
+           				</div>
+          </div>
+                  <br><br>
+          <div class="row ">      
+                        <div class="col-xs-6 col-md-6" align="right"><b>Fecha de Nacimiento:</b></div>
+                        <div class="col-xs-6 col-md-6" align="left"> <?php echo Form::date("fecnac"); ?></div>
+          </div>
+          <div class="row">
+                		<div class="col-xs-6 col-md-6" align="right"> <strong>País:</strong></div>
+                		<div class="col-xs-6 col-md-6" align="left">
+							       <select name="pais" id="pais" onchange="getestado(this)" class="form-control" style="width:150px" required>
+	     	  						<option value="">Seleccione Uno..</option>
+  		     						<?php foreach(Load::model('pais')->find('order: nombre ASC') as $p): ?>
+		  		    					<option value="<?php echo $p->id; ?>"><?php echo $p->nombre; ?></option> 
+		  				    		<?php endforeach; ?>	  	
+		 				         </select>
+  						      </div>
+ 					</div>
+  				<div id='estados' class="row"></div>
+  				
+          <div class="row ">
+              <div class="col-xs-12 col-md-12" align="center"><b>Ingrese su Dirección de Habitación Actual.</b></div>
+          </div>
+          <br><br>
+          <div class="row ">
+						<div class="col-xs-6 col-md-6" align="right"><b>Teléfono Principal:</b></div>
+            <div class="col-xs-6 col-md-6" align="left"><?php echo Form::text("telef1", "size='25' required") ?></div>
+          </div>
+          <div class="row ">
+             <div class="col-xs-6 col-md-6" align="right"><b>Código Postal: </b></div>
+             <div class="col-xs-6 col-md-6" align="left"><?php echo Form::text("codpos", "size='10' required"); ?></div>
+          </div>   						
+   				<div class="row ">
+              <div class="col-xs-6 col-md-6" align="right"><b>Dirección Principal:</b></div>
+               <div class="col-xs-6 col-md-6" align="left"><?php echo Form::text("direc1", "size='25' required") ?></div>
+          </div>
+          <br>
+          <div class="row ">                        
+                <div class="col-xs-12 col-md-12" align="center"><b>Dirección Secundaria (de ser diferente a la Dirección Actual).</b> </div>
+          </div>
+          <br><br>
+          <div class="row ">
+          		<div class="col-xs-6 col-md-6" align="right"><b>Teléfono Secundario:</b></div>
+                <div class="col-xs-6 col-md-6" align="left"><?php echo Form::text("telef2", "size='25' required") ?></div>
+          </div>
+          <div class="row ">
+   				<div class="col-xs-6 col-md-6" align="right"><b>Dirección Secundaria:</b></div>
+              	<div class="col-xs-6 col-md-6" align="left"><?php echo Form::text("direc2", "size='25' required") ?></div>
+          </div>
+          <br><br>
+          <div class="row ">
+      				<div class="col-xs-6 col-md-6" align="right"><b>Plantel de Procedencia:</b></div>
+				    	<div class="col-xs-6 col-md-6" align="left"><?php echo Form::text("plantel", "size='25' required")?></div>
+          </div>
+          <div class="row ">
+		    			<div class="col-xs-6 col-md-6" align="right"><b>Año de Graduación:</b></div>
+				    	<div class="col-xs-6 col-md-6" align="left"><?php echo Form::text("anogra", "size='8' required") ?></div>
+          </div>
+          <div class="row ">
+              <div class="col-xs-6 col-md-6" align="right"><b>Promedio de Notas:</b></div>
+					    <div class="col-xs-6 col-md-6" align="left"><?php echo Form::text("promed", "size='8' required") ?></div>
+           </div>   <br><br>
+           <div class="row ">
+              <div class="col-xs-6 col-md-6" align="right"><b>Correo Electrónico:</b></div>
+						  <div class="col-xs-6 col-md-6" align="left"><?php echo Form::text("correo2", "size='30'  required")?> </div>
+          </div><br><br>
+
+					 <div class="row ">  <div class="col-xs-12 col-md-12" align="center">
+						<?php echo Form::submit('Registrarse',"class='btn btn-primary btn-sm' name='aceptar'"); ?>
+                        <?php echo Form::hidden("ceestemp.numced", NULL,'1') ?>
+                    </div>
+          </div>
+       </div>
+       </section>
+ 
+<?php echo Form::close(); ?>
+<?php } ?>
+</div> 
+
+<?php echo View::content(); ?>
+
+<?php echo Tag::js("conest/conest"); ?> 
+
+<script type="text/javascript">
+	
+	function getcorreccion(correcto) {                   
+                     var nuevoalias = jQuery.noConflict();
+                     nuevoalias(document).ready(function() {
+                     var correcto = nuevoalias('select[name=correcto]').val();
+                     nuevoalias.ajax({
+                             type: "POST",
+                             url:  'registro/correccion/'+correcto,
+                             data: "correcto=" + correcto,
+                             success: function(html){
+                                      nuevoalias("#corregir").html(html);
+                                      }
+                              })                        
+                      })
+              };
+</script>

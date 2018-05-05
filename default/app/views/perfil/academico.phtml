@@ -1,0 +1,194 @@
+<?php View::content() ?>
+<?php echo Conesth::ruta('Perfil/Datos Académicos') ?>
+
+
+<section class="content">
+           <div class="row  hidden-xs">
+            <div class="col-md-3 col-sm-6 col-xs-12">
+              <div class="info-box">
+                <span class="info-box-icon bg-aqua"><i class="fa fa-star"></i></span>
+                <div class="info-box-content">
+                  <span class="info-box-text">Índice Académico</span>
+                  <span class="info-box-number"><?php echo $data->indic1; ?></span>
+                </div><!-- /.info-box-content -->
+              </div><!-- /.info-box -->
+            </div><!-- /.col -->
+            <div class="col-md-3 col-sm-6 col-xs-12">
+              <div class="info-box">
+                <span class="info-box-icon bg-green"><i class="fa fa-thumb-tack"></i></span>
+                <div class="info-box-content">
+                  <span class="info-box-text">Período Actual</span>
+                  <span class="info-box-number"><?php echo $data->peract; ?></span>
+                </div><!-- /.info-box-content -->
+              </div><!-- /.info-box -->
+            </div><!-- /.col -->
+            <div class="col-md-3 col-sm-6 col-xs-12">
+              <div class="info-box">
+                <span class="info-box-icon bg-yellow"><i class="fa fa-sort-numeric-asc"></i></span>
+                <div class="info-box-content">
+                  <span class="info-box-text">Créditos <br> Aprobados</span>
+                  <span class="info-box-number"><?php echo $data->creaap; ?></span>
+                </div><!-- /.info-box-content -->
+              </div><!-- /.info-box -->
+            </div><!-- /.col -->
+            <div class="col-md-3 col-sm-6 col-xs-12">
+              <div class="info-box">
+                <span class="info-box-icon bg-red"><i class="fa fa-exclamation-triangle"></i></span>
+                <div class="info-box-content">
+                  <span class="info-box-text">Status</span>
+                  <span class="info-box-number"><?php echo $data->status; ?></span>
+                </div><!-- /.info-box-content -->
+              </div><!-- /.info-box -->
+            </div><!-- /.col -->
+          </div><!-- /.row -->
+          
+          <div class="row">
+          <div class="col-md-12">
+              <div class="nav-tabs-custom">
+              
+                <ul class="nav nav-tabs">
+                  <li class="active"><a href="#record" data-toggle="tab">Récord Académico</a></li>
+                  <li><a href="#carrera" data-toggle="tab">Carrera</a></li>
+                  <li><a href="#indices" data-toggle="tab">Índices</a></li>
+                  <!-- <li><a href="#settings" data-toggle="tab">Settings</a></li> -->
+                </ul>
+                
+                
+                <div class="tab-content">
+                
+                <div class="active tab-pane" id="record">
+                    <!-- The timeline -->
+                     <!--<div class="box">-->
+                      <div class="box-header with-border">
+                        
+                        <div class="form-group">
+                          <label>Programa</label>
+                          <?php echo Conesth::dbselect("codcar","descar","cecar","where codcar in(select codcar from ceesta where numcar='$data->numcar')",$data->codcar,"form-control","perfil/academico/1/25"); ?>
+                        </div></h2>
+                      </div><!-- /.box-header -->
+                      
+                      <div class="box-body">
+                        <table class="table table-bordered table-striped table-hover">
+                          <tr>
+                            <th style="width: 20px">Período</th>
+                            <th>Unidades Curriculares</th>
+                            <th style="width: 10px" class="hidden-xs">Créditos</th>
+                            <th style="width: 10px">Nota</th>
+                            <th style="width: 10px" class="hidden-xs">Información</th>
+                          </tr>
+                         <?php $x=Load::model('cehmtc')->busca_notas($data->numcar,$data->codcar,$page,$perpage); ?>
+                         <?php foreach($x->items as $h){ ?>	
+                         	<tr>
+                           		<td align="center"><?php echo $h->numano.'-'.$h->numper?></td>
+                          		<td><?php echo "<span class='hidden-xs'>".$h->codmat.'-</span>'.$h->nommat?></td>
+                          		<td align="center" class="hidden-xs"><?php echo $h->numcre?></td>
+                          		<td align="center"><?php echo $h->notapr.$h->notper ?></td> 
+                          		<td align="center" class="hidden-xs"><?php echo $h->indmat?></td>
+                          	</tr>
+						 <?php } ?>
+                        </table>
+                      </div><!-- /.box-body -->
+                        <div class="box-footer clearfix">
+                        
+                          <ul class="pagination pagination-sm no-margin pull-right">
+                          <?php if($x->prev!=""){ ?>
+                            <li><?php echo Ajax::link("perfil/academico/".$x->prev."/".$perpage."/".$data->codcar, '&laquo;', 'page-wrapper'); ?></li>
+                          <?php } ?>
+                             <?php for($i=1; $i<=$x->total; $i++): ?>
+						                <li>
+                              <?php echo Ajax::link("perfil/academico/".$i."/".$perpage."/".$data->codcar, $i, 'page-wrapper'); ?>
+                            </li>
+    						           <?php endfor ?>
+                            <?php if($x->next!=""){ ?>
+                            <li><?php echo Ajax::link("perfil/academico/".$x->next."/".$perpage."/".$data->codcar, '&raquo;', 'page-wrapper'); ?>
+                            </li>
+                            <?php } ?>
+                          </ul>
+                        </div>
+                        <?php // echo View::partial('paginators/classic') ?>
+
+                   <!--</div> /.box -->
+                  </div><!-- /.tab-pane -->
+                
+                
+                  <div class="tab-pane" id="carrera">
+                    <!-- Post -->
+<!--                  <div class="box box-default">-->
+                      <div class="box-body">
+                        <strong><i class="fa fa-book margin-r-5"></i>  PROGRAMA</strong>
+                        <p class="text-muted">
+                          <?php echo $data->codcar; ?>   <?php echo $descar=Load::model('cecar')->bus_descar($data->codcar); ?>
+                        </p>
+
+                        <hr>
+                        <strong><i class="fa fa-calendar margin-r-5"></i> PLAN DE ESTUDIOS</strong>
+                        <p class="text-muted"> <?php echo $data->codpln; ?></p>
+
+                        <hr>
+
+                        <strong><i class="fa fa-line-chart margin-r-5"></i> CONDICIÓN</strong>
+                        <p class="text-muted"> <?php echo $data->condac; ?></p>
+
+                        <hr>
+
+                        <strong><i class="fa fa-envelope margin-r-5"></i> STATUS</strong>
+                        <p class="text-muted"> <?php echo $data->status; ?></p>
+
+                        <hr>
+                        
+                      </div><!-- /.box-body -->
+                    <!--</div> /.box -->
+                  </div>
+
+                  <div class="tab-pane" id="indices">  
+                    <!--<div class="box box-default">-->
+                      <div class="box-body">
+                        <strong><i class="fa fa-book margin-r-5"></i>  ACADÉMICO</strong>
+                        <p class="text-muted">
+                          <?php echo $data->indic1; ?></p>
+                        <hr>
+                        <strong><i class="fa fa-envelope margin-r-5"></i> ÚLTIMO SEMESTRE</strong>
+                        <p class="text-muted"> <?php echo $data->indic2; ?></p>
+
+                        <hr>
+
+
+                        <strong><i class="fa fa-calendar margin-r-5"></i> EFECTIVIDAD</strong>
+                        <p class="text-muted"> <?php echo $data->indic3; ?></p>
+
+                        <hr>
+
+                        <strong><i class="fa fa-line-chart margin-r-5"></i> ÍNDICE DE EFECTIVIDAD</strong>
+                        <p class="text-muted"> <?php echo $data->indic4; ?></p>
+
+                        <hr>
+
+                        
+                      </div><!-- /.box-body -->
+                    <!--</div> /.box -->
+                  </div>
+
+                  
+                </div><!-- /.tab-content -->
+              </div><!-- /.nav-tabs-custom -->
+            </div><!-- /.col -->
+          </div><!-- /.row -->
+
+        </section><!-- /.content -->
+        
+        <!--<script language="javascript">
+        $('#codcar').change(
+			function(){
+				var tipo_id=$('#codcar').val();
+				var _url="datacads/cads/1/25/"+tipo_id;
+				$.ajax({
+					type: "POST",
+					url: _url,
+					data: "codcar="+tipo_id,
+					success: function(data){
+						$('#page-wrapper').html(data);
+					}
+				});
+				
+			})
+        </script>-->

@@ -1,0 +1,19 @@
+	<?php echo View::content(); ?>
+	 <br>
+
+	<div class="col-xs-6 col-md-6" align="right">
+	<strong>Municipio.:</strong>
+	</div>
+	<div class="col-xs-6 col-md-6" align="left">
+	<select name='municipio' id='municipio' onchange="getParroquia(this)" class="form-control" style="width:250px" required>
+		<option value="">Seleccione...</option>
+		<?php foreach(Load::model('municipio')->find("id_entidad||'0'||id_ciudad='$entidad_id'") as $mun) { ?>
+			<?php $id_option = $mun->id_entidad.'0'.$mun->id_munici; ?>
+			<option value="<?php echo $id_option; ?>"><?php echo $mun->municipio; ?></option>
+		<?php } ?>
+	</select>
+	</div>
+	<br>
+
+
+<?php echo Tag::js("jquery/conest"); ?>  

@@ -1,0 +1,42 @@
+<div id="reporte"></div>
+
+<p><h3 align="left">Reportes y Consultas</h3></p>
+<table width="95%" border="1" align="center" cellpadding="1" cellspacing="1">
+  <tr>
+    <td width="50%" align="left"><ul>
+      <li><?php echo link_to_remote("Listado de Alumnos por Seccion","update: conte", "action: reportes/alumnosporseccion/"); ?></li>
+    </ul></td>
+    <td width="50%" align="left"><ul>
+      <li><?php echo link_to_remote("Listado de Representantes con mas de un hijo Inscrito","update: reporte", "action: reportes/representantescondescuentos/"); ?></li>
+    </ul></td>
+  </tr>
+  <tr>
+    <td align="left"><ul>
+      <li><?php echo link_to_remote("Listado de Representantes","update: reporte", "action: reportes/listaderepresentantes/"); ?></li>
+    </ul></td>
+    <td align="left"> <ul><li><?php echo link_to_remote("Ingresos del Colegio","update: conte", "action: reportes/ingresos/"); ?></li></ul></td>
+  </tr>
+  <tr>
+    <td align="left"><ul>
+      <li>Ingresos Mesuales</li>
+    </ul></td>
+    <td align="left">&nbsp;</td>
+  </tr>
+  <tr>
+    <td align="left"><ul>
+      <li>Ingresos Anuales</li>
+    </ul></td>
+    <td align="left">&nbsp;</td>
+  </tr>
+  <tr>
+    <td align="left"><ul>
+      <li></li>
+    </ul></td>
+    <td align="left">&nbsp;</td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+  </tr>
+</table>
+<?php echo View::content() ?>

@@ -1,0 +1,58 @@
+<?php echo link_to_remote("Regresar","update: conte", "action: reportes/actualizacion/"); ?>
+
+<?php 
+$Detalle = Load::model('detalle'); 
+?>
+
+<?php echo View::helpers('ConestsHelpers'); ?>
+<?php echo View::content() ?>
+
+<?php echo form_remote_tag("reportes/ingresos","update: conte", "name: frminsest", "method: post") ?>
+
+   <table width="50%" border="0" align="center" cellpadding="2" cellspacing="2">
+  <tr>
+    <td width="50%" align="right"><b>Año:&nbsp;</b>
+     </td>
+    <td width="50%" align="left"><select id="numano" name="numano" style="width:200px">
+            <? if($numano!="0") { ?>
+			<option value="0" selected="selected">Seleccione un...</option>
+	            <? foreach($Detalle->find_all_by_sql("select distinct fecreg as numano from detalle where stafac='C' order by fecreg") as $detalle): ?>
+				<? if ($numano==substr($detalle->numano,0,4)){ ?>
+               		<option value='<?= substr($detalle->numano,0,4)?>' selected="selected" ><?= substr($detalle->numano,0,4)  ?></option>
+				<? } else { ?>
+					<option value='<?= substr($detalle->numano,0,4) ?>' ><?= substr($detalle->numano,0,4) ?></option>	
+				<? } ?>
+			
+				<? endforeach; ?>
+    		<? }else{ ?>
+				<option value="0" selected="selected">Seleccione...</option>
+                <? foreach($Detalle->find_all_by_sql("select distinct fecreg as numano from detalle where stafac='C' order by fecreg") as $detalle): ?>
+					<option value='<?= substr($detalle->numano,0,4) ?>' ><?= substr($detalle->numano,0,4) ?></option>	
+				<? endforeach; ?>
+			<? } ?>
+        </select></td>
+  </tr>
+  <tr>
+	<td align="center" colspan='2'> <?php echo submit_tag("name: generar","Generar"); ?></td> 
+ </tr>
+ </table>
+<?php echo end_form_tag() ?>
+
+ <script type="text/javascript">
+	new Event.observe("numano", "change", function(){
+		new AJAX.viewRequest({action: "reportes/ingresos/"+$F("numano"),container: "conte"})
+		})	
+  </script>
+  <div id='reporte'></div>
+  <? if($numano!="0"){ ?>
+  <table align="center" width="100px" border="1" cellpadding="1" cellspacing="1" >
+  <tr>
+  <? foreach($Detalle->find_all_by_sql("select distinct fecreg from detalle where stafac='C' and fecreg>='$numano-01-01' and fecreg<='$numano-12-31' order by fecreg") as $detalle): ?>
+  <td><?php echo link_to_remote("$detalle->fecreg","update: reporte", "action: reportes/ingresosdiarios/"); ?>
+  </td>
+  <? endforeach; ?>
+  </tr>
+  </table>
+	
+<? } ?>
+ 

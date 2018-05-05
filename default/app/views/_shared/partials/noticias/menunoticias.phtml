@@ -1,0 +1,20 @@
+<?php $Cetabs = Load::model('cetabs'); ?>
+<div class="col-sm-2 paddingTop20">
+	<nav class="nav-sidebar">
+		<ul class="nav">
+        	<li class="active"><a href="#"><b>Secciones</b></a></li>
+            <?php foreach($Cetabs->find("conditions: id!=0") as $c) {  ?>
+             	<li><?php echo Html::link("noticias/todas/$c->id", "$c->destab"); ?></li>
+                <li class="nav-divider"></li>
+                   		<!--<li><a href="#">Tecnología</a></li>
+                    	<li class="nav-divider"></li>
+                    	<li><a href="#">Educación</a></li>
+                    	<li class="nav-divider"></li>
+                    	<li><a href="#">Salud</a></li>
+                    	<li class="nav-divider"></li>
+                    	<li><a href="#">Agro y Mar</a></li>
+                    	<li class="nav-divider"></li>-->
+            <?php } ?>
+		</ul>
+	</nav>
+</div>

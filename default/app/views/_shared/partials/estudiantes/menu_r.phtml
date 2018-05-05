@@ -1,0 +1,56 @@
+ <?php $r=load::model('representante')->busca_uno(Session::get('cedrep')); ?>
+ <nav class="navbar navbar-default">
+                          
+                          <!-- Brand and toggle get grouped for better mobile display -->
+                            <div class="navbar-header">
+                              <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                                <span class="sr-only">Toggle navigation</span>
+                                <span class="icon-bar"></span>
+                                <span class="icon-bar"></span>
+                                <span class="icon-bar"></span>
+                              </button>
+                            </div>
+
+                            <!-- Collect the nav links, forms, and other content for toggling -->
+                            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                              <?php /*<ul class="nav navbar-nav">
+                               <li><strong>Cédula de Identidad.:</strong><?php echo $r->cedrep ?><br>
+                              <strong>Nombre.:</strong> <?php echo $r->aperep.', '.$r->nomrep ?></li>
+                              </ul> */ ?>
+                              <ul class="nav navbar-nav navbar-right">
+                                <li  class="active"><?php echo Ajax::link("representante/portal/{$r->cedrep}", '<i class="fa fa-pencil-square-o "></i>Facturar', 'page-wrapper'); ?></li>   
+                                <?php $sua=load::model('alumno')->count("cedrep='$r->cedrep'"); ?>
+                                <?php if($sua<=2){ ?>
+                                    <li><?php echo Ajax::link("alumno/index/{$r->cedrep}", '<i class="fa fa-group"></i>Nuevo', 'contenedor'); ?></li>
+                                    <?php $yy=1 ; ?>
+                                    <?php foreach(load::model('alumno')->find("cedrep='$r->cedrep'") as $al) { ?>
+                                        <?php $nom=explode(' ', $al->nomalu); ?>
+                                        <li><?php echo Ajax::link("alumno/index/{$r->cedrep}/{$al->codalu}", '<i class="fa fa-user">'.$yy.'</i>'.strtolower($nom[0]), 'contenedor'); ?></li>
+                                        <?php $yy++; ?> 
+                                    <?php } ?>
+                                <?php }else{ ?>
+                                    <li class="dropdown">
+                                  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-group"></i>Alumnos <span class="caret"></span></a>
+                                  <ul class="dropdown-menu">
+                                    <li><?php echo Ajax::link("alumno/index/{$r->cedrep}", 'Nuevo', 'contenedor'); ?></li>
+                                    <?php foreach(load::model('alumno')->find("cedrep='$r->cedrep'") as $al) { ?>
+                                        <?php $nom=explode(' ', $al->nomalu); ?>
+                                        <li><?php echo Ajax::link("alumno/index/{$r->cedrep}/{$al->codalu}", strtolower($nom[0]), 'contenedor'); ?></li>
+                                    <?php } ?>
+                                  </ul>
+                                </li>
+
+
+                                <?php } ?>
+
+                                <li class="dropdown">
+                                  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-print"></i>Reportes <span class="caret"></span></a>
+                                  <ul class="dropdown-menu">
+                                    <li><a href="#">Facturas</a></li>
+                                    <li><a href="#">Constancias Egresados</a></li>
+                                  </ul>
+                                </li>
+                                <li><?php echo Ajax::link("mensaje/msg/", '<i class="fa fa-sign-out"></i>Regresar', 'page-wrapper'); ?></li>
+                                </ul>                             
+                            </div><!-- /.navbar-collapse -->
+                    </nav>

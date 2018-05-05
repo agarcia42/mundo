@@ -1,0 +1,28 @@
+
+        <div class="col-sm-3">
+            <div class="form-group">
+            <label style=" width: 30%">Nivel</label>
+            <?php echo Conesth::dbselect("codniv","desniv","nivel","",$codniv,"form-control","alumno/dat_ins/","inscripcion"); ?>
+            </div>
+        </div>
+        
+        <div class="col-sm-3">
+            <div class="form-group">
+            <label style=" width: 30%">Tarifa</label>
+            <?php echo Conesth::dbselect("codtar","destar","tarifa","where codniv='$codniv'",$codtar,"form-control","alumno/dat_ins/{$codniv}","inscripcion"); ?>
+            </div>
+        </div>
+        
+        <div class="col-sm-3">
+            <div class="form-group">
+            <label style=" width: 30%">Curso</label>
+            <?php echo Conesth::dbselect("codcur","descur","curso","where codniv='$codniv'",$codcur,"form-control","alumno/dat_ins/{$codniv}/{$codtar}","inscripcion"); ?>
+            </div>
+        </div>
+        
+        <div class="col-sm-3"> 
+            <div class="form-group">
+            <label style=" width: 30%"s>Sección</label>
+            <?php echo Conesth::dbselect("codsec","codsec","seccion","where codniv='$codniv' and codcur='$codcur'",$codsec,"form-control","alumno/dat_ins/{$codniv}/{$codtar}/{$codcur}","inscripcion"); ?>
+            </div>
+        </div>

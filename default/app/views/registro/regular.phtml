@@ -1,0 +1,58 @@
+<?php echo View::content(); ?>
+
+<?php if($vista==1){ ?>   
+    <div class="col-xs-12 col-sm-12" align="center">
+	<div class="page-header">
+		<h1>Registro de Estudiantes Regulares Control de Estudios UNEFM</h1>
+	</div>
+<?php echo Ajax::form("conte", "registro/regular"); ?>
+	
+   	<div >
+		     	<div class="row">
+                        <div class="col-xs-6 col-md-6" align="right"><b>C.I./Pasaporte:</b> </div>
+                        <div class="col-xs-6 col-md-6" align="left"><?php echo $cees->numcar; ?></div>
+                        <input name="numcar" type="hidden" value="<?php echo $cees->numcar; ?>" />
+                        <input name="correo1" type="hidden" value="<?php echo $email; ?>" />
+          </div>  
+                        <br>
+          <div class="row">
+        				<div class="col-xs-6 col-md-6" align="right"><b>Nombre Completo:</b> </div>
+                <div class="col-xs-6 col-md-6" align="left"><?php echo $cees->nomest." ".$cees->apeest; ?></div>
+          </div>
+                        <br>
+						
+        <div class="row">
+                		<div class="col-xs-6 col-md-6" align="right"> 
+	  						<strong>País:</strong> 	 
+ 						</div>
+                		<div class="col-xs-6 col-md-6" align="left">
+							<select name="pais" id="pais" onchange="getestado(this)" class="form-control" style="width:250px" required>
+		  						<option value="">Seleccione Uno..</option>
+		  						<?php foreach(Load::model('pais')->find('order: nombre ASC') as $p): ?>
+		  							<option value="<?php echo $p->id; ?>"><?php echo $p->nombre; ?></option> 
+		  						<?php endforeach; ?>	  	
+		 					</select>
+  						</div>
+ 				</div>
+  			<div id='estados' class="row"></div>
+                      
+          <div class="row">
+               		<div class="col-xs-6 col-md-6" align="right"><b>Correo Electrónico:</b> </div>
+						<div class="col-xs-6 col-md-6" align="left"> <?php echo Form::text("correo2", "size: 30")?>
+                    </div>
+          </div>
+                    <br><br>
+          <div class="row">
+					<div class="col-xs-12 col-md-12" align="center">
+						<?php echo Form::submit('Registrarse',"class='btn btn-primary btn-sm' name='aceptar'"); ?>
+                        <?php echo Form::hidden("ceestp.numcar", NULL,'1') ?>
+                    </div>
+                </div>
+
+			</div>
+</div>
+
+<?php } ?>
+<?php echo Form::close(); ?>
+
+<?php echo Tag::js("conest/conest"); ?> 

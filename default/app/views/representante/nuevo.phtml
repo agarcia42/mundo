@@ -1,0 +1,71 @@
+ <?php View::content() ?>
+
+
+<?php echo Ajax::form('contenedor', 'representante/nuevo');  ?>
+
+                                           
+                                            <h4 class="page-head-line">Nuevo Representante</h4>
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label for="cedula">Número de Cédula</label>
+                                                        <?php echo form::text("cedula", "class='form-control' placeholder='12345678' required",$cedula); ?>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label for="apellidos">Apellidos</label>
+                                                        <?php echo form::text("apellidos", "class='form-control' placeholder='Perez Hernandez' required",$apellidos); ?>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label for="nombres">Nombres</label>
+                                                        <?php echo form::text("nombres", "class='form-control' placeholder='Javier Alonso' required",$nombres); ?>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label for="direccion">Direccion</label>
+                                                        <?php echo form::text("direccion", "class='form-control' placeholder='Calle/Avenida/casa' required",$direccion); ?>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label for="telef1">Telefono Casa</label>
+                                                        <?php echo form::text("telef1", "class='form-control' placeholder='02682502500' required",$telef1); ?>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label for="telef2">Telefono Celular</label>
+                                                       <?php echo form::text("telef2", "class='form-control' placeholder='04265673391'",$telef2); ?>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label for="tele3">Telefono Oficina</label>
+                                                        <?php echo form::text("tele3", "class='form-control' placeholder='04140456984'",$telef3); ?>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <div class="form-group">
+                                                        <label for="correo">Correo</label>
+                                                        <?php echo form::email("correo", "class='form-control' placeholder='jperezgmail.com'",$correo); ?>
+                                                    </div>
+                                                </div>
+                                               
+                                            </div>
+                                            <?php echo form::hidden("representante.cedrep"); ?>
+                                            <?php echo Form::submit('Guardar',"class='btn btn-info btn-lg pull-right' name='aceptar'") ?>
+<?php echo Form::close(); ?>
+

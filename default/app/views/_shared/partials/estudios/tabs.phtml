@@ -1,0 +1,24 @@
+<?php $Cetabs = Load::model('cetabs'); ?>
+
+<div class="tab-fondo">
+	<ul class="nav nav-pills pull-left" role="tablist">
+	<?php foreach($Cetabs->find("conditions: id!=0") as $c) { 
+		if($c->id==1) { //$class="class='active'"; } else { $class=""; } ?>
+			<li role="presentation" class="active"><a href="#<?php echo $c->tabref ?>" aria-controls="" data-toggle="tab" role="tab"><?php echo $c->destab ?></a></li>
+    <?php }  else { ?>
+    		<li role="presentation"><a href="#<?php echo $c->tabref ?>" aria-controls="" data-toggle="tab" role="tab"><?php echo $c->destab ?></a></li>
+    <?php }  } ?>
+	</ul>
+</div>
+
+
+<!--                       
+			 			<div class="tab-fondo">
+                            <ul class="nav nav-pills pull-left" role="tablist">
+                                <li role="presentation" class="active"><a href="#graduaciones" aria-controls="" data-toggle="tab" role="tab">Graduaciones</a></li>
+                                <li role="presentation"><a href="#tecnologia" aria-controls="" data-toggle="tab" role="tab">Tecnología</a></li>
+                                <li role="presentation"><a href="#educacion" aria-controls="" data-toggle="tab" role="tab">Educación</a></li>
+                                <li role="presentation"><a href="#salud" aria-controls="" data-toggle="tab" role="tab">Salud</a></li>
+                                <li role="presentation"><a href="#Agro y Mar" aria-controls="" data-toggle="tab" role="tab">Agro y Mar</a></li>
+                            </ul>
+                        </div>

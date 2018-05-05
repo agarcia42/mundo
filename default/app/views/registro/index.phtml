@@ -1,0 +1,36 @@
+ <?php echo Tag::js('jquery/jquery.kumbiaphp.min'); ?>
+<br><br><br>
+<article class="container-login center-block">
+    <section>
+       <ul id="top-bar" class="nav nav-tabs nav-justified">
+          <li><?php echo Html::link("", "Ingresar"); ?></li>
+          <li class="active"><?php //echo Html::link("registro/index", "Regístrate"); ?><?php echo Ajax::link('registro/index', 'Regístrate', 'estudiantes',NULL); ?>
+          </li>
+       </ul>
+       <div class="tab-content tabs-login" >
+          <div id="ingresar" class="tab-pane fade active in">	
+				<?php View::content() ?> 
+				<?php echo Html::img('img/Logo-Estudiantes.png', $alt='logo', "class='img-thumbnail img-responsive'"); ?>			
+				 <?php //echo form::open(); ?>
+				<?php echo Ajax::form('conte', 'registro/index');  ?>
+				<div class="form-group ">
+					<label for="login" class="sr-only">Cédula de Identidad</label>
+					<input type="text" class="form-control1" name="numced" id="numced" 
+					placeholder="Cédula de Identidad" tabindex=3 value="" />
+				</div>
+				<div class="form-group ">
+					<label for="password" class="sr-only">Correo Electrónico</label>
+					<input type="email" class="form-control1" name="email" id="email"
+					placeholder="Correo Electrónico" value="" tabindex=4 />
+				</div>
+				<br/>
+				<div class="form-group ">				
+				<button type="submit" name="aceptar" id="aceptar" tabindex=5
+				class="btn btn-primary btn-sm">Registrarme</button>	
+				</div>
+ 				<?php echo Form::hidden("ceestema.numced", NULL,'1'); ?>
+				<?php echo Form::close(); ?>
+			</div>
+    	</div>
+   </section>
+</article>

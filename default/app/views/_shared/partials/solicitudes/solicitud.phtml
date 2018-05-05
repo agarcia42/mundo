@@ -1,0 +1,114 @@
+ <? $su = Session::get('su'); ?>
+ <?php $datos=Load::model('cesolgra')->personal($su['numcar']); ?>
+
+ <section class="content"> 
+          <div class="box box-default">
+              <div class="box-header with-border">
+                  <h3 class="box-title"> Solicitud de Grado</h3>
+              </div>
+             	 <!-- Lista de Asignaturas -->
+              <div class="box-body box-profile">
+  <div class="row">
+    <div class="col-xs-12 col-md-2" align="left"> 
+		  <strong><u>Tipo de Acto.:</u></strong></div>
+		<div class="col-xs-12 col-md-10" align="left"> 
+		  <?php echo Conests::un_dat('codact','desact','cepact',$datos->acto); ?></div>
+  </div>
+  	<hr>
+  <div class="row">
+    <div class="col-xs-12 col-md-12" align="left"> 
+		<strong><u>Nombres y Apellidos.: (Sugeridos, como saldrán en su Titulo)</u></strong>
+	</div>
+  </div>
+  <div class="row">
+    <div class="col-xs-12 col-md-12" align="left"> 
+		<?php echo $datos->nomest.", ".$datos->apeest; ?>
+	</div>
+  </div><hr>	
+ <div class="row">
+  <div class="col-xs-12 col-md-2" align="left"> 
+   <strong><u>Sexo.:</u></strong>
+  </div>
+  <div class="col-xs-12 col-md-10" align="left">
+    <?php echo Conests::un_dat('codsex','dessex','cepsex',$datos->codsex); ?>
+ </div>
+ </div><hr>
+
+ <div class="row">
+  <div class="col-xs-12 col-md-2" align="left"> 
+  <strong><u>Estado Civil.:</u></strong></div>
+  <div class="col-xs-12 col-md-10" align="left">    
+   <?php echo Conests::un_dat('estciv','desciv','cepciv',$datos->estciv); ?>
+ </div>
+ </div><hr>
+  <div class="row">
+  <div class="col-xs-12 col-md-12" align="left"> 
+  	<strong><u>*Lugar  de Nacimiento</u></strong></div>
+  </div>
+  <br>
+  <div class="row">
+  <div class="col-xs-12 col-md-12" align="left"> 
+	  <?php if($datos->descom=='1'){ ?> 
+        <?php echo $datos->lugnac; ?>
+    <?php }else{	  ?>
+        <div class="row">
+          <div class="col-xs-12 col-md-4" align="left">
+            <?php echo "<strong><u>CIUDAD.:</u></strong> ".$datos->ciudad; ?>
+          </div>
+          <div class="col-xs-12 col-md-4" align="left">
+            <?php echo "<strong><u> MUNICIPIO.:</u></strong> ".$datos->municipio; ?> 
+          </div>
+          <div class="col-xs-12 col-md-4" align="left">
+            <?php echo"<strong><u> ESTADO.:</u></strong> ".$datos->estado; ?>
+          </div>
+        </div>
+    <?php } ?>
+  </div>
+  </div>
+  <hr>
+
+ <div class="row">
+  <div class="col-xs-12 col-md-2" align="left">
+    <strong><u>Télefonos.:</u></strong><br>
+  </div>
+  <div class="col-xs-12 col-md-10" align="left" >
+    <?php echo $datos->telef1." - ". $datos->telef1; ?>    
+  </div>
+</div>
+  <hr>
+  <div class="row">
+  <div class="col-xs-12 col-md-2" align="left">
+    <strong><u>Correo.:</u></strong><br>
+  </div>
+  <div class="col-xs-12 col-md-10" align="left" >
+    <?php echo $datos->correo; ?>
+  </div>
+</div>
+  <hr>
+  <div class="row">
+  <div class="col-xs-12 col-md-2" align="left">
+  <strong><u>Titulo a Solicitar.:</u></strong>
+  </div> 
+  <div class="col-xs-12 col-md-10" align="left">
+   <?php echo Conests::un_dat('codcar','descar','cecar',$datos->titsol); ?>
+  </div>
+  </div>
+  <hr>
+  <div class="row">
+  <div class="col-xs-6 col-md-6" align="left">
+  <?php if($datos->solgra=='1'){ ?>
+   <?php echo Ajax::link('reportes/sol_exp', 'Modificar Solicitud', 'page-wrapper','btn btn-md btn-primary btn-block'); ?>
+  <?php } ?>
+  </div> 
+  <div class="col-xs-6 col-md-6" align="left">
+   <?php if($datos->solgra=='1'){ ?>
+   <?php $link="reportes/sol_exp/".$datos->numcar."/".$datos->titsol; ?>
+   <?php echo Ajax::link($link, "Imprimir Solicitud", "page-wrapper","btn btn-md btn-primary btn-block"); ?>
+  <?php } ?>
+  </div>
+  </div>
+  
+  </div>
+ </div>    
+</section><!-- /.content -->
+</form>

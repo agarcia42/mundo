@@ -1,0 +1,137 @@
+<?php echo View::content() ?>
+
+<?php echo Ajax::form('page-wrapper', 'seccion/actualizacion');  ?>
+                            <div class="box box-info">
+                                     <div class="box-header with-border">
+                                            <h4 class="page-head-line">Conceptos de Pago</h4>
+                                            <div class="row">
+                                                <div class="col-md-4">
+                                                    <div class="form-group">
+                                                        <label for="codigo">Nivel</label>
+                                                         <?php echo Conesth::dbselect("codniv","desniv","nivel","",$codniv,"form-control","seccion/actualizacion"); ?>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <div class="form-group">
+                                                        <label for="codigo">Curso</label>
+                                                         <?php echo Conesth::dbselect("codcur","descur","curso","where codniv='$codniv'",$codcur,"form-control","seccion/actualizacion/".$codniv); ?>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <div class="form-group">
+                                                        <label for="codigo">Periodo</label>
+                                                         <?php echo Conesth::dbselect("codper","codper","periodo","",$codper,"form-control","seccion/actualizacion/".$codniv."/".$codcur); ?>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-4">
+                                                    <div class="form-group">
+                                                        <label for="codigo">Seccion</label>
+                                                         <?php echo form::text("codsec", "class='form-control'  required",$codsec); ?>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <div class="form-group">
+                                                        <label for="codigo">Salón</label>
+                                                        <?php echo form::text("codsal", "class='form-control'  required",$codsal); ?>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <div class="form-group">
+                                                        <label for="descripcion">Capacidad</label>
+                                                        <?php echo form::text("numcup", "class='form-control'  required",$numcup); ?>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-12 pull-right">
+                                                    <?php echo form::hidden("seccion.fecreg"); ?>
+                                                     <?php echo Form::submit('Guardar',"class='btn btn-info btn-lg pull-right' name='aceptar'") ?>
+                                                </div>
+                                            </div>
+                                    </div>
+                            </div>
+  
+<?php echo Form::close(); ?>
+
+
+<br />
+<br />
+<?php $pagina=Load::model('seccion')->paginar($obser,$page,$perpage);  ?>
+
+<? if($pagina->total>0) { ?>
+<!-- MUESTRA LA PAGINA ACTUAL Y EL TOTAL DE PAGINAS -->
+
+<?php 
+if(!isset($show)) {
+    $show = 10;
+}
+    
+$half = (int)($show/2);
+//echo $halt;
+    
+
+if ($pagina->current <= $half) {
+    $start = 1;
+} elseif (($pagina->total - $pagina->current)<$half) {
+    $start = $pagina->total - $show + 1;
+} else {
+    $start = $pagina->current - $half;
+}
+?>
+<?php if($pagina->prev) echo Ajax::link('seccion/actualizacion/'.$codniv.'/'.$codcur.'/'.$codper.'/'.$codsec.'/N/'.$pagina->prev, Html::img('rewind.png', $alt='Modificar'), 'page-wrapper'); ?>
+
+
+    <?php for($i=$start; $i<=$pagina->total && $i<($start + $show); $i++): ?>
+        <?php echo Ajax::link('seccion/actualizacion/'.$codniv.'/'.$codcur.'/'.$codper.'/'.$codsec.'/N/'.$i, $i , 'page-wrapper'); ?>
+
+    <?php endfor; ?>
+
+<?php if($pagina->next) echo Ajax::link('seccion/actualizacion/'.$codniv.'/'.$codcur.'/'.$codper.'/'.$codsec.'/N/'.$pagina->next, Html::img('fast_forward', $alt='Modificar'), 'page-wrapper'); ?>  
+
+
+<br />
+
+<table class="table table-bordered table-striped table-hover">
+<thead>
+	<tr>
+        <th width="30%" align="left" >Nivel</th>
+        <th width="30%" align="left" >Curso</th>
+        <th width="10%" align="left" >Sección</th>
+        <th width="10%" align="left" >Período</th>
+        <th width="10%" align="left" >Salon</th>
+        <th width="10%" align="left" >Capacidad</th>
+        <th colspan='2'>-</th>
+	</tr>
+</thead>
+<tbody>
+<? foreach($pagina->items as $paginas1): ?> 
+    <tr>
+        <td align="left" ><?php echo $paginas1->codniv ?></td>
+        <td align="left" ><?php echo $paginas1->codcur ?></td>
+        <td align="left" ><?php echo $paginas1->codsec ?></td>
+        <td align="left" ><?php echo $paginas1->codper ?></td>
+        <td align="left" ><?php echo $paginas1->codsal ?></td>
+        <td align="left" ><?php echo $paginas1->numcup ?></td>
+        <td align="center" ><?php echo Ajax::link('seccion/actualizacion/'.$paginas1->codniv.'/'.$paginas1->codcur.'/'.$paginas1->codper.'/'.$paginas1->codsec.'/N/'.$pagina->current, Html::img('edit.gif', $alt='Modificar'), 'page-wrapper'); ?>
+</td>
+        <td align="center" ><?php echo Ajax::link('seccion/actualizacion/'.$paginas1->codniv.'/'.$paginas1->codcur.'/'.$paginas1->codper.'/'.$paginas1->codsec.'/E/'.$pagina->current, Html::img('delete.gif', $alt='Modificar'), 'page-wrapper'); ?>
+	</tr>
+   <? endforeach ?>
+   </tbody>
+</table>
+
+
+<br />
+
+<table border="0" cellpadding="1" cellspacing="1" width="80%" align="center">
+<tr><td align="right">
+   <b>Pág.  </b><?php echo $pagina->current ?> de <?php echo $pagina->total ?>&nbsp;
+    </td></tr>
+</table>
+
+
+
+<? } ?>
+

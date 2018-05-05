@@ -1,0 +1,188 @@
+<?php echo View::content(); ?>
+<?php echo Conesth::ruta('Solicitudes/Grado') ?>
+
+<?php $datos=Load::model('cesolgra')->personal($numcar); ?>
+<?php if($datos->solgra=='0') { ?>
+
+<?php if(Load::model('cepoin')->aperturado($codcar,$codsed,$tiphor,'staexp')){ ?>
+ <div id="spinner" class="spinner" style="display: none;">
+      <?php $r = PUBLIC_PATH.'img/loader.gif'; ?>
+      <img id="img-spinner" src="<?php echo $r; ?>" alt="Loading" width='60' height='50'/>
+      <div id='capa'></div>
+ </div>
+ <?php echo Ajax::form('page-wrapper', 'solicitudes/grado', "form-inline","POST","id = form_sol_gra" );  ?>
+   <section class="content"> 
+          <div class="box box-default">
+              <div class="box-header with-border">
+                  <h3 class="box-title"> Solicitud de Grado</h3>
+              </div>
+             	 <!-- Lista de Asignaturas -->
+              <div class="box-body box-profile">
+              <div class="row">
+        	    <div class="col-xs-12 col-md-2" align="left"> 
+		  			<strong><u>Tipo de Acto.:</u></strong>
+		  		</div>
+		  		<div class="col-xs-12 col-md-10" align="left"> 
+		  		  <?php echo Conesth::tipoActo('acto'); ?>
+
+		
+  			</div>
+  			<div  class="col-xs-12 col-md-12"  id="fecgra"></div>
+  	</div>
+  	<br>
+  
+  <div class="row">
+    <div class="col-xs-12 col-md-12" align="left"> 
+		<strong><u>Nombres y Apellidos.: (Sugeridos, como saldrán en su Titulo)</u></strong>
+	</div>
+  </div>
+  <div class="row">
+    <div class="col-xs-12 col-md-12" align="left"> 
+		<input type="text" class="form-control" name='nomest' value="<?php echo $datos->nomest; ?>">
+		<input type="text" class="form-control" name='apeest' value="<?php echo $datos->apeest; ?>">
+	</div>
+  </div><br>	
+ <div class="row">
+      <div class="col-xs-12 col-md-2" align="left"> 
+      <strong><u>Sexo.:</u></strong>
+      </div>
+      <div class="col-xs-12 col-md-10" align="left">
+  <?php echo Conesth::sexoSelect('codsex',$datos->codsex); ?>
+
+ </div>
+ </div><br>
+
+ <div class="row">
+      <div class="col-xs-12 col-md-2" align="left"> 
+      <strong><u>Estado Civil.:</u></strong></div>
+  <div class="col-xs-12 col-md-10" align="left">    
+  <?php  echo Conesth::estcivSelect('estciv',$datos->estciv); ?>
+ </div>
+ </div><br>
+  <div class="row">
+  <div class="col-xs-12 col-md-12" align="left"> 
+  	<strong><u>*Lugar  de Nacimiento</u></strong></div>
+  </div>
+  <br>
+  <div class="row">
+  <div class="col-xs-12 col-md-2" align="left"> 
+	  <strong>País.:</strong> 	 
+  </div>
+   <div class="col-xs-12 col-md-10" align="left">
+	  <select name="pais" id="pais" onchange="getestado(this)" class="form-control" required>
+		  	<option value="">Seleccione Uno..</option>
+		  	<?php foreach(Load::model('pais')->find('order: nombre ASC') as $p): ?>
+		  			<option value="<?php echo $p->id; ?>"><?php echo $p->nombre; ?></option> 
+		  	<?php endforeach; ?>	  	
+		  </select>
+  </div>
+  </div>
+
+  <div id='estados' class="row"></div>
+  <div id='ciudades' class="row"></div>
+  <div id='municipios' class="row"></div>
+  <div id='parroquias' class="row"></div>
+  <br>
+
+ <div class="row">
+  <div class="col-xs-12 col-md-2" align="left">
+    <strong><u>Télefonos.:</u></strong><br>
+  </div>
+  <div class="col-xs-12 col-md-10" align="left" >
+    <input type="text"  name="telefono1" class="form-control" required>
+    <input type="text"  name="telefono2" class="form-control" required>    
+  </div>
+</div>
+  <br>
+  <div class="row">
+  <div class="col-xs-12 col-md-2" align="left">
+    <strong><u>Correo.:</u></strong><br>
+  </div>
+  <div class="col-xs-12 col-md-10" align="left" >
+  <?php echo Form::email('correo',"class='form-control' required", $datos->correo ) ; ?>
+  </div>
+</div>
+  <br>
+  <div class="row">
+  <div class="col-xs-12 col-md-2" align="left">
+  <strong><u>Titulo a Solicitar.:</u></strong>
+  </div> 
+  <div class="col-xs-12 col-md-10" align="left">
+  	<select name='titulo' id='titulo' class="form-control" required>
+  		<?php $seleccion=""; ?>
+		<option value="">Seleccione...</option>
+            	<?php $cecar=Load::model('cecar')->find_first("codcar='$codcar'"); ?>
+            	<?php if($cecar->sallat!="" and $cecar->sallat!="0") { ?>
+              		<?php $salida=Load::model('cecar')->find_first("codcar='$cecar->sallat'"); ?>
+                	<?php if(!load::model('cegrexp')->find_first("numcar='$numcar' and codcar='$cecar->sallat' and indval='C' and cerexp='1'")) { ?>
+						<option value="<?php echo $salida->codcar ?>" ><?php echo $salida->titulo ?></option>
+              			
+                   <?php } ?>
+			  <?php } ?>
+			  <option value="<?php echo $cecar->codcar ?>" ><?php echo $cecar->titulo ?></option> 		
+  	</select>
+  </div>
+  </div>
+  <hr>
+  <div class="row">
+  	<div class="col-xs-12 col-md-12" align="left">
+ 		 <?php echo Form::hidden("cesolexp.numcar", NULL,'1') ?>
+ 		 <?php if($datos->solgra=='0'){ ?>
+    		<input type='submit' class="btn btn-md btn-primary btn-block" name="aceptar" value="Procesar Solicitud">
+  		<?php } ?>
+  	</div>
+  </div>
+  </div>
+ </div>    
+</section><!-- /.content -->
+</form>
+
+<?php echo Tag::js("conest/conest"); ?>  
+	
+<? }else{ ?>
+   <div align="center"><? Flash::warning("Error: Solicitud de Grado esta cerrado"); ?></div>
+<?php } ?>
+
+<?php }else{ ?>
+	 <?php echo View::partial('solicitudes/solicitud'); ?>
+<?php } ?>
+
+<script type="text/javascript">
+    var jq = jQuery.noConflict();
+    jq(document).ready(function() {
+        jq('#form_sol_gra, #fat, #fo3').submit(function(){
+            var titulo = jq('select[name=titulo]').val();
+            var pais   = jq('select[name=pais]').val();
+            if(pais == "232") {
+            	 var ent   = jq('select[name=entidades]').val();
+            	 var mun   = jq('select[name=municipio]').val();
+            	 var par   = jq('select[name=parroquia]').val();
+            	 	if(ent=="" || mun =="" || par==""){
+                          alert('Complete el Lugar de Nacimiento');
+                          return false;
+            		}
+            }
+            if(titulo == ""){
+                          alert('Debe Seleccionar el Titulo a Solicitar');
+                          return false;
+            } else if(pais == "") {
+                          alert('Debe Seleccionar Lugar de Nacimiento');
+                          return false;
+            }else {
+                  jq.ajax({
+                      type: 'POST',
+                      url: jq(this).attr('action'),
+                      data: jq(this).serialize(),
+                      beforeSend: function () {
+                          jq('#spinner').show();
+                          jq("#capa").html("<b>Procesando, espere por favor...</b>");
+                          },
+                      success: function(response) {
+                          jq('#page-wrapper').html(response);
+                      }
+                  }) 
+                  }    
+            return false;
+        });
+        })
+</script>

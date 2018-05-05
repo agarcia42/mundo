@@ -1,0 +1,4 @@
+1. hay que agregar una funcion en la base de datos para validar_materias_regulares_dos
+2. hay que modificar el trigger de ceinse iud para que no almacene la auditoria de las PS or PR
+3. agregar campo numcre en tabla cecen,cecenve
+4. crear data cepsex,cepciv,cepact

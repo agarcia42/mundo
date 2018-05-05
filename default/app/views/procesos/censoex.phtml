@@ -1,0 +1,75 @@
+<?php View::content() ?>
+
+<?php echo Conesth::ruta('Procesos/Inscripciones Extemporáneas') ?>
+<?php if(Load::model('cepoin')->aperturado($codcar,$codsed,$tiphor,'stacie')){ ?>
+
+      <?php echo Ajax::form('page-wrapper', 'procesos/censoex');  ?>
+
+        <!-- Main content -->
+        <section class="content"> <!-- AQUI COMIENZA LA CAJA QUE CONTIENE LAS MATERIAS Y SECCIONES -->
+            <div class="center-block">
+              <div class="box box-default">
+                <div class="box-header with-border">
+                  <h3 class="box-title"> Censo Único y Obligatorio de Inscripciones Extemporáneas de Unidades Curriculares Cursadas</h3>
+                </div>
+              <!-- Lista de Asignaturas -->
+          <div class="content center-block">
+            <div class="row">
+              <div class="col-xs-12 col-md-6">
+                      <strong>Materia</strong>
+                       <?php echo Conesth::dbselect("codmat","nommat","cemmat","where codcar='$codcar' and codmat not in(select codmat from cehmtc where numcar='$numcar' and codcar='$codcar' and indnrp not in('AP','EQ'))",$codmat,"form-control","procesos/censoex",'page-wrapper','codmat'); ?>
+              </div>
+            </div>
+              <div class="row">
+                <div class="col-xs-12 col-md-4">
+                  <strong>Año</strong>
+                       <?php echo Conesth::dbselect("numano","numano","cefper","where codcar='$codcar' and codsed='$codsed' and tiphor='$tiphor'",$numano,"form-control","procesos/censoex/$codmat",'page-wrapper','numano',$codmat,'desc'); ?>
+                </div>
+              <div class="col-xs-12 col-md-2">
+                <strong>Período</strong>
+                  <?php echo Conesth::dbselect("numper","numper","cefper","where codcar='$codcar' and codsed='$codsed' and tiphor='$tiphor' and numano='$numano'",$numper,"form-control","procesos/censoex/$codmat/$numano",'page-wrapper','numper'); ?></div>
+              </div>  <br>
+          </div>
+          <div class="center-block">
+          <?php echo Form::hidden("censoie.nomuse", NULL,$numcar) ?>
+          <p><?php echo Form::submit('Censar',"class='btn btn-info btn-lg' name='aceptar'") ?></p>
+          </div>
+          <br>
+        </div>
+      </div>
+
+      </div><!-- /.col -->
+      </div><!-- /.row -->
+      </section><!-- /.content -->
+      <?php echo Form::close(); ?>
+      <br>
+      <?php if(Load::model('censoie')->find_first("numcar='$numcar' and codcar='$codcar'")){ ?>
+      <section class="content"> 
+          <div class="box box-default">
+              <div class="box-header with-border">
+                  <h3 class="box-title"> Descripción de Asignatura</h3>
+              </div>
+               <!-- Lista de Asignaturas -->
+              <div class="box-body box-profile">
+                    <?php foreach(Load::model('censoie')->todos($numcar,$codcar) as $c) { ?>
+                        <?php $mat=Load::model('cemmat')->busca_uno($c->codcar,$c->codmat); ?>
+                        <div class="row">
+                          <div class="col-xs-12 col-md-8"> 
+                            <?php echo '  '.$mat->codmat.'-'.$mat->nommat ?></div>
+                          <div class="col-xs-6 col-md-2 ">
+                            <?php echo $c->numano."-".$c->numper ?>
+                          </div>
+                          <div class="col-xs-6 col-md-2" align="right">
+                              <?php echo Ajax::linkConfirm('procesos/censoex/'.$c->codmat.'/'.$c->numano.'/'.$c->numper.'/E', 'ELIM', 'page-wrapper','Esta seguro que no desea registrar esta materia?'); ?>
+                          </div>
+                        </div>
+                        <hr>
+                    <?php } ?> 
+              </div>
+          </div>    
+      </section><!-- /.content -->
+      <?php } ?>
+
+ <? }else{ ?>
+   <div align="center"><? Flash::warning("Error: el CENSO de unidades curriculares extemporáneas esta cerrado"); ?></div>
+  <?php } ?>

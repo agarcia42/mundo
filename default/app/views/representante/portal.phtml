@@ -1,0 +1,222 @@
+ <?php View::content() ?>
+ <?php $r=load::model('representante')->busca_uno($cedrep); ?>
+
+<div id="page-inner">
+     
+  <div class="row">
+      <div class="col-md-12">
+          <h3><?php echo $r->aperep.' '.$r->nomrep ?></h3>
+      </div>
+  </div>
+
+  <div class="row menu">
+      <?php echo View::partial('estudiantes/menu_r') ?>
+  </div>
+
+  <div class="row">
+    <div class="col-md-12" id='contenedor'>
+  
+  <?php 
+$Alumno = Load::model('alumno');
+$Inscripcion = Load::model('inscripcion');
+$Esquema = Load::model('esquema'); 
+$Concepto = Load::model('concepto');
+$Monto = Load::model('monto');
+$Detalle = Load::model('detalle');
+?>
+
+
+<?php $alum=load::model('alumno')->find("conditions: cedrep='$cedrep'","order: codalu asc"); ?>
+
+<div class="nav-tabs-custom">
+      <ul class="nav nav-tabs">
+          <?php //$x=1; ?>
+          <?php foreach($alum as $al): ?>
+              <?php if($codalu==0){$codalu=$al->codalu;} ?>
+              <?php $clas=($al->codalu==$codalu)?"active":""; ?>
+              <li class="<?php echo $clas ?>"><a href="#<?php echo $al->codalu; ?>" data-toggle="tab"><i class="icon ion-university"></i><?php echo $al->nomalu; ?></a></li>
+              <?php //$x++; ?>
+          <?php endforeach; ?>
+      </ul>
+      <div class="tab-content">
+          <?php //$x=1;  
+          $clas=''?>
+          <?php foreach($alum as $al): ?>
+          <?php $ins=load::model('inscripcion')->find_first("conditions: cedrep='$cedrep' and codalu='$al->codalu'"); ?>  
+              <?php $clas=($al->codalu==$codalu)?"active":""; ?>
+          <div class="<?php echo $clas ?> tab-pane" id="<?php echo $al->codalu ?>">
+          <div class="row">
+                  <div class="col-md-12">
+                    <div class="panel panel-info">
+                      <div class="panel-heading">
+                        <!-- Tabs -->
+                        <ul class="nav panel-tabs1">
+                        <?php foreach(load::model('esquema')->find("order: desesq asc") as $esq): ?>
+                        <?php if($codesq=='0'){$codesq=$esq->codesq;} ?>
+                           <?php $clase=($esq->codesq==$codesq) ? "active" : ""; ?>
+                          <li class="<?php echo $clase ?>"><a href="#tab<?php echo $al->codalu.$esq->codesq ?>" data-toggle="tab"><i class="glyphicon glyphicon-user"></i><?php echo $esq->desesq; ?></a></li>
+                        <?php endforeach; ?>
+                        </ul>
+                      </div>
+                      <div class="panel-body">
+                        <div class="tab-content">
+                        <?php foreach(load::model('esquema')->find("order: desesq asc") as $esq): ?>
+                        <?php $clase=($esq->codesq==$codesq) ? "active" : ""; ?>
+                          <div class="tab-pane <?php echo $clase ?>" id="tab<?php echo $al->codalu.$esq->codesq  ?>">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <!--inicio conceptos de pago-->
+
+<div class="form-group">
+                    <?php if( $ins and $Concepto->find_first("codniv='$ins->codniv' and codtar='$ins->codtar' and  codesq='$esq->codesq'")){ ?>
+
+          <?php foreach($Concepto->find("codniv='$ins->codniv' and codtar='$ins->codtar' and codesq='$esq->codesq'","order: codesq, ordcon") as $conc): ?>
+                    <?php $con=$Monto->find_first("codniv='$ins->codniv' and codtar='$ins->codtar' and codcon='$conc->codcon' and codper='$ins->codper'"); ?>
+               <?php $det=$Detalle->sum("mondet","conditions: cedrep='$cedrep' and stafac='C' and codalu='$al->codalu' AND codniv='$ins->codniv' and codtar='$ins->codtar' and codcon='$conc->codcon' and codper='$ins->codper'"); ?>
+              <div class="col-sm-3"> 
+           <?php $detal = $Detalle->find_first("codniv='$ins->codniv' and codtar='$ins->codtar' and cedrep='$cedrep' and codalu='$ins->codalu' and codcon='$conc->codcon' and codper='$ins->codper'");  ?>
+                     
+            <?php if($ins->desfac==100){ ?>
+                    <?php echo Html::img('colegio/exonerar.png', $alt='exonerar', "title='Exonerado' width='20' height='20'"); ?>
+                     <?php }elseif(!$detal){ ?>
+                      <!--por pagar-->
+                      <?php echo Ajax::link('representante/portal/'.$cedrep.'/'.$al->codalu.'/'.$esq->codesq.'/'.$conc->codcon.'/S', Html::img('colegio/porpagar.png', $alt='porpagar', "title='Por pagar' width='20' height='20'"), 'page-wrapper'); ?>
+          
+                      <?php }else{ ?>
+                        <?php if($detal->stafac=="F"){ ?>
+                            <!--facturado-->
+                            <?php echo Html::img('colegio/inscribir.png', $alt='inscribir', "title='inscribir' width='20' height='20'"); ?>
+                        <?php }elseif($detal->stafac=='C'){ ?>
+                          <?php if($det+(($con->monto*$ins->desfac)/100)<$con->monto){ ?>
+                                <!--pagado fraccionado-->
+                                 <?php echo Ajax::link('representante/portal/'.$cedrep.'/'.$al->codalu.'/'.$esq->codesq.'/'.$conc->codcon.'/S', Html::img('colegio/fraccionado.png', $alt='fraccionado', "title='fraccionado' width='20' height='20'"), 'page-wrapper'); ?>
+                                 <?php }else{ ?>
+                                    <!--pagado-->
+                                     <?php echo Html::img('colegio/pagado.png', $alt='pagado', "title='pagado' width='20' height='20'"); ?>
+                               <?php } ?>
+                        <?php }elseif($detal->stafac=='E'){ ?>
+                             <?php echo Ajax::link('representante/portal/'.$cedrep.'/'.$al->codalu.'/'.$esq->codesq.'/'.$conc->codcon.'/E', Html::img('colegio/exonerar.png', $alt='exonerar', "title='Eliminar exoneración' width='20' height='20'"), 'page-wrapper'); ?>
+                        <?php }else{ ?>
+                         <?php echo Ajax::link('representante/portal/'.$cedrep.'/'.$al->codalu.'/'.$esq->codesq.'/'.$conc->codcon.'/P', Html::img('colegio/noaplica.png', $alt='noaplica', "title='Eliminar Noaplica' width='20' height='20'"), 'page-wrapper'); ?>
+                        <?php } ?>
+                      <?php } ?>
+                     </a>
+                    <?php echo $conc->descon; ?>
+                     </div> 
+            <?php endforeach; ?>
+          <?php } ?>
+    </div> 
+
+                                        <!--fin conceptos de pago-->
+                                    </div>
+                                </div>
+                          </div>
+                        <?php //$y++; ?>
+                        <?php endforeach; ?>
+                      </div>
+                     </div>
+                  </div>
+                </div>
+            </div>
+            </div>
+
+            <?php //$x++; ?>
+            <?php endforeach; ?>
+          </div>
+
+</div>
+
+<?php $fact=$Detalle->find_first("cedrep='$cedrep' and stafac='F'")?>
+<?php if ($fact){ ?>
+<div class="row">
+    <div class="col-md-12" align="center">
+    <?php echo Ajax::link('facturas/actualizacion/'.$cedrep.'/F', Html::img('colegio/facturar.png', $alt='Facturar', "title='Facturar' width='60' height='60'"), 'contenedor'); ?>
+    </div>
+</div>              
+<br>
+<div class="box box-info">
+  <div class="box-header with-border">
+     <h3>Detalles de la Factura</h3>
+  </div>
+
+ <div class="box-body">
+ <div class="table-responsive">
+<table class="table table-bordered table-striped table-hover">
+  <thead>
+  <tr>
+        <td align="left" width="25%"><b>Concepto</b></td>
+        <td align="left" width="5%"><b>Status</b></td>
+        <td align="center" ><b>Sin Efecto</b></td> 
+        <td align="center" ><b>Exonerar</b></td> 
+    <td align="center" ><b>Alumno </b></td> 
+        <td align="center" ><b>Descuento </b></td> 
+        <td align="center" ><b>Facturado</b></td>
+        <td align="center" ><b>Deuda</b></td>
+        <td align="center" ><b>Acción</b></td>
+  </tr>
+  </thead>
+    <tbody>
+    <? $x=1; $total=0; ?>
+     <?php foreach($Detalle->find("cedrep='$cedrep' and stafac!='E' and stafac!='P' and stafac!='C'","order: codalu,codcon") as $pag): ?>
+   <?php $alu=$Alumno->find_first("cedrep='$cedrep' and codalu='$pag->codalu'") ; ?>
+     <?php $ins=$Inscripcion->find_first("cedrep='$cedrep' and codalu='$pag->codalu'","order codper desc") ; ?>
+   <?php $con=$Monto->find_first("codniv='$pag->codniv' and codtar='$pag->codtar' and codcon='$pag->codcon' and codper='$ins->codper'"); ?>
+     <?php $desc=($con->monto*$alu->desfac)/100; //echo $desc;?>
+
+     <?php $det=$Detalle->sum("mondet","conditions: cedrep='$cedrep'and stafac!='E' and stafac!='P' and stafac='C' and codalu='$pag->codalu' AND codniv='$pag->codniv' and codtar='$pag->codtar' and codcon='$pag->codcon' and codper='$ins->codper'"); ?>
+      <? if ($con){ $totpar=$con->monto-($det+($con->monto*$pag->desfac)/100); } else {$totpar=0;} 
+    $totpar=round($totpar,0);
+    ?>
+
+    <tr>
+        <td align="left" width="25%"><?php echo $pag->codcon."-".$pag->desdet ?></td> 
+        <td align="center" width="5%"><?php echo $pag->stafac ?></td>
+        <td align="center" width="15%">
+        <?php echo Ajax::link('representante/portal/'.$pag->cedrep.'/'.$pag->codalu.'/'.$codesq.'/'.$pag->codcon.'/SE', Html::img('colegio/si.jpg', $alt='Sin Efecto', "title='Dejar sin efecto' width='12' height='12'"), 'page-wrapper'); ?>
+        </td> 
+    <td align="center" width="15%">
+          <?php echo Ajax::link('representante/portal/'.$pag->cedrep.'/'.$pag->codalu.'/'.$codesq.'/'.$pag->codcon.'/EX', Html::img('colegio/si.jpg', $alt='Sin Efecto', "title='Exonerar' width='12' height='12'"), 'page-wrapper'); ?>
+        </td> 
+        <td align="center" width="15%">
+    <?php echo $alu->nomalu ?></td>
+        <td align="center"> <?php echo form::text("desfac".$x, "size='2' maxlength='30' onchange='descuento(\"".$pag->cedrep."\",\"".$pag->codalu."\",\"".$codesq."\",\"".$pag->codcon."\",\"DS\",".$x.")'",$pag->desfac); ?>&nbsp;%</td>
+        <td align="center" width="15%"><?php  echo form::text("mondet".$x, "size='12' maxlength='30' onchange='pagoparcial(\"".$pag->cedrep."\",\"".$pag->codalu."\",\"".$codesq."\",\"".$pag->codcon."\",\"PP\",".$x.")'",$pag->mondet);?></td>
+        <td align="center" width="15%"><?php echo  $totpar ?></td>
+        <td align="center" ><?php echo Ajax::link('representante/portal/'.$pag->cedrep.'/'.$pag->codalu.'/'.$codesq.'/'.$pag->codcon.'/ED', Html::img('delete.gif', $alt='Eliminar', "title='Eliminar Detalle' width='20' height='20'"), 'page-wrapper'); ?>
+        </td>
+        
+  </tr>
+  
+    <?php 
+    if($pag->stafac=="F"){
+      $total=$total + $pag->mondet;
+    }
+  ?>
+
+<? $x++; ?>
+<?php endforeach ?>
+    
+      <tr>
+          <td align="right"  Colspan='6'><b>Total a Cancelar.:</b>&nbsp;</td> 
+            <td align="center" width="15%"><?php echo $total //echo numeric_field_tag("subtot", "size: 12", "maxlength: 30","value: $total") ?> </td>
+                <td align="center" width="15%">&nbsp;</td>
+                <td align="center" width="15%">&nbsp;</td>
+    </tr>
+        
+        
+    </tbody>
+    
+</table>
+</div>
+</div>
+</div>
+<?php } ?>
+
+    </div><!--fin col-md-12-->
+  </div>
+</div>
+
+<?php echo Tag::js("conest/conest"); ?>  
+                
+                
+                

@@ -1,0 +1,108 @@
+<div class="col-xs-12 col-sm-12 col-md-5 col-lg-5">
+	<div class="page-header">
+		<h1>Consultas</h1>
+	</div>
+	<div class="panel with-nav-tabs panel-primary">
+		<div class="panel-heading">
+	    	<ul class="nav nav-tabs tabs-font">
+	        	<li class="active"><a href="#constancias" data-toggle="tab" class="color">Constancias</a></li>
+	            <li><a href="#nuevo-ingreso" data-toggle="tab" class="color">Nuevo ingreso</a></li>
+	            <li><a href="#carnet" data-toggle="tab" class="color">Carnet</a></li>
+	            <li><a href="#inscripciones" data-toggle="tab" class="color">Inscripciones</a></li>
+ 			</ul>
+	    </div>
+
+        <div class="panel-body">
+			<div class="tab-content">
+		     	<div class="tab-pane fade in active" id="constancias">
+		         	<?php echo Ajax::form('report','consultas/constancias');  ?>
+                    	<div class="form-group ">
+	                     	<div id='report'></div>
+                            <input type="text" class="form-control" name="idcons" id="idcons" placeholder="Ingresa el Código de Constancia a Consultar" tabindex="6" value="" />
+                            <?php echo Form::hidden("coimes.codcon", NULL,'1') ?>
+						</div>
+						<div class="form-group ">
+							<?php echo Form::submit('Consultar',"class='btn btn-primary btn-sm' name='aceptar'"); ?>
+						</div>
+       	            <?php echo Form::close(); ?>
+				</div>
+						
+		        <div class="tab-pane fade" id="nuevo-ingreso">
+                	<?php echo Ajax::form('resultado','consultas/nuevoingreso');  ?>
+                    	<div class="form-group ">
+	                    	<div id='resultado'></div>
+                            <input type="text" class="form-control" name="numcar" id="numcar" placeholder="Ingresa la Cédula del Aspirante" value="" />
+                             <?php echo Form::hidden("ceestema.numced", NULL,'1') ?>
+						</div>
+						<div class="form-group ">
+                         	<?php echo Form::submit('Consultar',"class='btn btn-primary btn-sm' name='aceptar'"); ?>
+						</div>
+					<?php echo Form::close(); ?>
+                </div>
+		        <div class="tab-pane fade" id="carnet">
+                  	<?php echo Ajax::form('result','consultas/carnet');  ?>
+                   		<div class="form-group ">
+	                   		<div id='result'></div>
+                      		<input type="text" class="form-control" name="numcar" id="numcar" placeholder="Ingresa la Cédula del Estudiante" value="" />
+                       		<?php echo Form::hidden("cecarnet.numcar", NULL,'1') ?>
+						</div>
+						<div class="form-group ">
+							<?php echo Form::submit('Consultar',"class='btn btn-primary btn-sm' name='aceptar'"); ?>
+                        </div>
+					<?php echo Form::close(); ?>
+                </div>
+		                  
+                <div class="tab-pane fade" id="inscripciones">
+               		<?php echo Ajax::form('resul','consultas/inscripciones');  ?>
+                    	<div class="form-group ">
+	                     	<div id='resul'></div>
+                            <input type="text" class="form-control" name="numcar" id="numcar" placeholder="Ingresa la Cédula del Estudiante" value="" />
+                            <?php echo Form::hidden("ceinse.numcar", NULL,'1') ?>
+						</div>
+						<div class="form-group ">
+							<?php echo Form::submit('Consultar',"class='btn btn-primary btn-sm' name='aceptar'"); ?>
+                        </div>
+					<?php echo Form::close(); ?>
+                </div>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+ 									<!--<form method="post" accept-charset="utf-8" autocomplete="off" role="form" class="form-horizontal">
+										<div class="form-group ">
+											<label for="login" class="sr-only">Código de la Constancia</label>
+												<input type="text" class="form-control" name="login" id="login_value"
+													placeholder="Ingresa el Código de Constancia" tabindex="6" value="" />
+										</div>
+										<div class="form-group ">
+											<button type="submit" name="log-me-in" id="submit" tabindex="7"
+											class="btn btn-primary btn-sm">Consultar</button>
+											</div>
+									</form><-->
+
+                                	<!--<form method="post" accept-charset="utf-8" autocomplete="off" role="form" class="form-horizontal">
+										<div class="form-group ">
+											<label for="login" class="sr-only">Cédula</label>
+												<input type="text" class="form-control" name="login" id="login_value"
+													placeholder="Ingresa Cédula del aspirante" tabindex="6" value="" />
+										</div>
+										<div class="form-group ">
+											<button type="submit" name="log-me-in" id="submit" tabindex="7"
+											class="btn btn-primary btn-sm">Consultar</button>
+											</div>
+									</form>
+                        				</div>-->
+	
+    	                            <!--<form method="post" accept-charset="utf-8" autocomplete="off" role="form" class="form-horizontal">
+										<div class="form-group ">
+											<label for="login" class="sr-only">Cédula Estudiante</label>
+												<input type="text" class="form-control" name="login" id="login_value"
+													placeholder="Ingresa el Cédula del Estudiante" tabindex="6" value="" />
+										</div>
+										<div class="form-group ">
+											<button type="submit" name="log-me-in" id="submit" tabindex="7"
+											class="btn btn-primary btn-sm">Consultar</button>
+											</div>
+									</form>-->

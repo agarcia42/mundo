@@ -1,0 +1,19 @@
+    <h1 class="title">Ingresar</h1>
+    <?php echo form::open(); ?>
+      <div class="input-container">
+        <input type="text" name="login" id="login" required="required"/>
+        <label for="Usuario">Usuario</label>
+        <div class="bar"></div>
+      </div>
+      <div class="input-container">
+        <input type="password" name="password" id="password" required="required"/>
+        <label for="contraseña">Contraseña</label>
+        <div class="bar"></div>
+      </div>
+      <div class="input-container"><?php echo View::content(); ?></div>
+      <div class="button-container">
+        <button type="submit" name="aceptar" id="aceptar"><span>INGRESAR</span></button>
+      </div>
+      <div class="footer"><a href="#">Olvidaste tu Contraseña?</a>
+      </div>
+     <?php echo form::close(); ?>

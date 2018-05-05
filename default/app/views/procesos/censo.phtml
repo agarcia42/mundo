@@ -1,0 +1,56 @@
+<?php View::content() ?>
+<?php if (Load::model('cemacu')->uno($numcar,$codcar,$codsed,$tiphor,$numano,$numper)) { ?>
+  <?php if(Load::model('cepoin')->aperturado($codcar,$codsed,$tiphor,'stacen')){ ?>
+    <?php if(Load::model('cepoin')->le_toca($codcar,$codsed,$tiphor,$possrt,'stacen')){ ?>
+      <?php echo Conesth::ruta('Procesos/Censo') ?>
+      <?php echo Ajax::form('page-wrapper', 'procesos/censo');  ?>
+      <section class="content"> 
+          <div class="box box-default">
+              <div class="box-header with-border">
+                  <h3 class="box-title"> Descripción de Asignatura</h3>
+              </div>
+             	 <!-- Lista de Asignaturas -->
+              <div class="box-body box-profile">
+				          	<?php $x=0; ?>
+                    <?php foreach(Load::model('cemacu')->todos($numcar,$codcar,$codsed,$tiphor,
+                                                         $numano,$numper) as $c) { ?>
+                    		<?php $mat=Load::model('cemmat')->busca_uno($c->codcar,$c->codmat); ?>
+							          <?php $existe=Load::model('cecen')->selecciona($numcar,$codcar,
+                                                         $codsed,$tiphor,$numano,$numper,
+                                                         $c->codmat); ?>
+                        <div class="row">
+                          <div class="col-xs-12 col-md-8"> 
+                            <?php echo Form::hidden("codmat".$x, NULL,$mat->codmat) ?>
+                            <?php echo '  '.$mat->codmat.'-'.$mat->nommat ?></div>
+                          <div class="col-xs-6 col-md-2 ">
+                            <?php echo $mat->numcre." U.C" ?>
+                            <?php echo Form::hidden("credit".$x, NULL,$mat->numcre) ?></div>
+                          <div class="col-xs-6 col-md-2" align="right">
+                            <?php if(!$existe){ ?>
+                              <?php echo Form::check('materi'.$x, "1");  ?>
+                            <?php }else{ ?>
+                              <?php echo Ajax::linkConfirm('procesos/censo/'.$c->codmat.'/E', 'ELIM', 'page-wrapper','Esta seguro que no desea Censar esta materia?'); ?>
+                            <?php } ?>
+                          </div>
+                        </div>
+                 			  <hr>
+                        <?php $x++; ?>
+                    <?php } ?> 
+                    <?php echo Form::hidden("cecen.numcre".$x, NULL,$x) ?>
+                    <?php echo Form::hidden("l", NULL,$x); ?>
+							     <p class="pull-right"><?php echo Form::submit('Censar',"class='btn btn-info btn-lg pull-right' name='aceptar'") ?></p>
+              </div>
+      		</div>    
+      </section><!-- /.content -->
+      <?php echo Form::close(); ?>
+    <? }else{ ?>
+      <? Flash::warning("Tu posición para el censo es: $possrt La  posición para  el  censo fue asignada  de  acuerdo a tu índice académico acumulado, con la finalidad de incentivar tu desempeño académico. <b>Actualmente se pueden censar los estudiantes con posición menor a ".load::model('cepoin')->posicion()." </b>"); ?>
+    <?php } ?>
+  <? }else{ ?>
+   <div align="center"><? Flash::warning("Error: el CENSO de unidades curriculares esta cerrado"); ?></div>
+  <?php } ?>
+<?php }else{ ?>
+  <div align="center"><?php echo Flash::warning("No se ha Generado Unidades Curriculares a Cursar"); ?></div>
+<?php } ?>
+
+

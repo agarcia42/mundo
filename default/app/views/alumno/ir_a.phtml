@@ -1,0 +1,14 @@
+<script type="text/javascript">
+                     var nuevo = jQuery.noConflict();
+                     nuevo(document).ready(function() {
+                     nuevo.ajax({
+                             type: "POST",
+                             url:  'representante/portal/'+<?php echo $cedrep ?>,
+                             data: "",
+                             success: function(html){
+                                      nuevo("#page-wrapper").html(html);
+                                      }
+                              })                        
+                      })
+</script> 
+

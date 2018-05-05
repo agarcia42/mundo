@@ -1,0 +1,27 @@
+<?php echo View::content(); ?>
+<br>
+<?php if($pais_id == "232") { ?>
+	 <div class="col-xs-6 col-md-6" align="right">
+	 	<strong>Estado:</strong>	
+	 </div>
+	 <div class="col-xs-6 col-md-6" align="left">
+	 <select name="entidades" id='entidades' onchange="getciudad(this)" class="form-control" style="width:250px" required> 
+	 	<option value="">Seleccione Uno...</option>
+	 	<?php flash::error("Load::model('entidad')->ent_pais($pais_id) as $esta"); ?>
+	  	<?php foreach(Load::model('entidad')->ent_pais($pais_id) as $esta){ ?>
+	  		<option value="<?php echo $esta->id_entidad; ?>"> <?php echo $esta->entidad; ?></option>
+	  	<?php } ?>
+	  	</select>
+	 </div>
+	 <br>
+<?php } else { ?>
+	<div class="col-xs-6 col-md-6" align="right">
+	 	<strong>Dirección en el Extranjero</strong>
+	</div>
+	<div class="col-xs-6 col-md-6" align="left" >
+		<textarea name="lugnac" id="lugnac" rows="4" cols="20" class="form-control" style="width:250px" required></textarea>
+	</div>
+<?php } ?> 
+<div id='ciudades' class="row"></div>
+<div id='municipios' class="row"></div>
+<div id='parroquias' class="row"></div>

@@ -1,0 +1,18 @@
+<?php echo Ajax::form('page-wrapper', 'mensaje/msg');  ?>
+    <div class="form-group">
+        <input class="form-control" id="cedrep" name="cedrep" placeholder="Número de Cédula">
+    </div>
+    <div class="row">
+    <div class="col-md-6">
+        <div class="form-group">
+            <input type="text" class="form-control" id="aperep" name="aperep" placeholder="Apellidos">
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="form-group">
+           <input type="text" class="form-control" id="nomrep" name="nomrep" placeholder="Nombres">
+        </div>
+    </div>
+    </div><?php echo Form::hidden("representante.cedrep", NULL,'1') ?>
+    <?php echo Form::submit('Buscar',"class='btn btn-block btn-info btn-flat' name='aceptar'") ?>
+<?php echo Form::close(); ?>

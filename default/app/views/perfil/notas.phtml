@@ -1,0 +1,36 @@
+<?php View::content() ?>
+
+<?php echo Conesth::ruta('Perfil/Notas') ?>
+<?php if(Load::model('cepoin')->aperturado($codcar,$codsed,$tiphor,'estnot')){ ?>
+
+      <?php if($datos){ ?>
+      <section class="content"> 
+          <div class="box box-default">
+              <div class="box-header with-border">
+                  <h3 class="box-title"> Descripción de Asignatura</h3>
+              </div>
+               <!-- Lista de Asignaturas -->
+              <div class="box-body box-profile">
+                    <?php foreach($datos as $c) { ?>
+                        <?php $mat=Load::model('cemmat')->busca_uno($c->codcar,$c->codmat); ?>
+                        <div class="row">
+                          <div class="col-xs-12 col-md-8"> 
+                            <?php echo '  '.$mat->codmat.'-'.$mat->nommat; ?></div>
+                          <div class="col-xs-6 col-md-2 ">
+                            <?php echo $c->numano."-".$c->numper; ?>
+                          </div>
+                          <div class="col-xs-6 col-md-2" align="right">
+                              <?php echo Load::model('ceactn')->nota($numcar,$codcar,$codsed,$tiphor,$numano,$numper,$c->codmat); ?>
+                          </div>
+                        </div>
+                        <hr>
+                    <?php } ?> 
+              </div>
+          </div>    
+      </section><!-- /.content -->
+      <?php }else{ ?>
+        <?php echo flash::error("Error: no Posee inscripcion en el periodo académico actual"); ?>
+      <?php } ?>
+<? }else{ ?>
+   <div align="center"><? Flash::warning("Error: el Proceso de Carga de notas no esta aperturado"); ?></div>
+<?php } ?>

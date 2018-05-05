@@ -1,0 +1,225 @@
+<?php //echo View::helpers('miHelpers'); ?>
+
+<?php View::content() ?>
+<div class="box box-info">
+                            <div class="box-header with-border">
+                                <h4><?php if($codalu==0){
+                                    echo "NUEVO";
+                                    }else{
+                                        $datos=load::model('alumno')->find_first("cedrep='$cedrep' and codalu='$codalu'");
+                                        if($datos){
+                                            echo $datos->nomalu;
+                                        }else{
+                                            echo "SIN DEFINIR";
+                                        }
+                                    } ?></h4>
+                            </div>
+
+
+                            <div class="nav-tabs-custom">
+                                <ul class="nav nav-tabs">
+                            <li class="active"><a href="#tab1" data-toggle="tab"><i class="glyphicon glyphicon-user"></i>Datos Personales</a></li>
+                            <?php if($codalu!=0){ ?>
+                            <li><a href="#tab2" data-toggle="tab"><i class="glyphicon glyphicon-pushpin"></i> Inscripción</a></li>
+                            <li><a href="#tab3" data-toggle="tab"><i class="glyphicon glyphicon-lock"></i> Representantes</a></li>
+                            <li><a href="#tab4" data-toggle="tab"><i class="glyphicon glyphicon-log-in"></i> Constancias</a></li>
+                            <?php } ?>
+                        </ul>
+                    </span>
+                            </div>
+                            <div class="panel-body">
+                                <div class="tab-content">
+                                    <div class="tab-pane active" id="tab1">
+                                        <div id='actualizadatos'></div>
+                                        <?php echo Ajax::form('actualizadatos', 'alumno/sal_alu');  ?>
+                                            
+                                            <div class="row">
+                                                <div class="col-md-4">
+                                                    <div class="form-group">
+                                                        <label for="cedula">Codigo del alumno<?php echo form::hidden("codalu","",$codalu); ?><?php echo form::hidden("cedrep","",$cedrep); ?></label>
+                                                        <?php echo form::text("codigo", "class='form-control' required readonly='true'",$codalu); ?>
+                                                    </div>
+                                                </div>
+                                                
+                                                
+                                            <?php /*</div>
+                                            <div class="row"> */ ?>
+                                                <div class="col-md-4">
+                                                    <div class="form-group">
+                                                        <label for="apellidos">Apellidos</label>
+                                                        <?php echo form::text("apealu", "class='form-control'  required",$apealu); ?>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <div class="form-group">
+                                                        <label for="nombres">Nombres</label>
+                                                        <?php echo form::text("nomalu", "class='form-control'  required",$nomalu); ?>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-4">
+                                                    <div class="form-group">
+                                                        <label for="cedula">Cédula Estudiantil<?php echo form::hidden("cedrep","",$cedrep); ?></label>
+                                                        <?php echo form::text("cedest", "class='form-control' required",$cedest); ?>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <div class="form-group">
+                                                        <label for="fecha">Fecha de Nacimiento</label>
+                                                        <?php echo form::date("fecnacalu", "class='form-control' placeholder='dd-mm-aaaa' required",$fecnacalu); ?>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <div class="form-group">
+                                                        <label for="genero">Género</label>
+                                                        <?php echo conesth::sexo('codsexalu', $codsexalu); ?>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-2">
+                                                    <div class="form-group">
+                                                        <label for="genero">Estado</label>
+                                                        <?php echo conesth::estado('status', $status); ?>
+                                                    </div>
+                                                </div>
+                                                 
+                                            </div>
+                                                <div class="row">
+                                                 <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label for="genero">Inscribir</label>
+                                                        <?php //echo form::text("desfac", "class='form-control'  required",$desfac); ?>
+                                                    </div>
+                                                </div>
+                                                  <div class="col-md-6">
+                                                    <div class="form-group">
+                                                         <?php echo form::hidden("alumno.cedrep"); ?>
+                                                         <?php echo Form::submit('Guardar',"class='btn btn-info btn-lg pull-right name='aceptar'") ?>
+                                                    </div>
+                                                </div>
+                                                  
+                                                
+                                                
+                                            </div>
+                                            
+                                           
+                                       <?php echo Form::close(); ?>
+                                    </div>
+
+                                    <div class="tab-pane" id="tab2">
+                                    <div id='actualizainscr'></div>
+                                         <?php echo Ajax::form('actualizainscr', 'alumno/sal_ins');  ?>
+        <div class="row" id="inscripcion">
+        
+        <div class="col-sm-3">
+            <div class="form-group">
+            <label style=" width: 30%">Nivel</label>
+            <?php echo Conesth::dbselect("codniv","desniv","nivel","",$codniv,"form-control","alumno/dat_ins","inscripcion"); ?>
+            </div>
+        </div>
+        
+        <div class="col-sm-3">
+            <div class="form-group">
+            <label style=" width: 30%">Tarifa</label>
+            <?php echo Conesth::dbselect("codtar","destar","tarifa","where codniv='$codniv'",$codtar,"form-control","alumno/dat_ins/{$codniv}/{$codtar}","inscripcion"); ?>
+            </div>
+        </div>
+        
+        <div class="col-sm-3">
+            <div class="form-group">
+            <label style=" width: 30%">Curso</label>
+            <?php echo Conesth::dbselect("codcur","descur","curso","where codniv='$codniv'",$codcur,"form-control","alumno/dat_ins/{$codniv}/{$codtar}","inscripcion"); ?>
+            </div>
+        </div>
+        
+        <div class="col-sm-3"> 
+            <div class="form-group">
+            <label style=" width: 30%"s>Sección</label>
+            <?php echo Conesth::dbselect("codsec","codsec","seccion","where codniv='$codniv' and codcur='$codcur'",$codsec,"form-control","alumno/dat_ins/{$codniv}/{$codtar}/{$codcur}","inscripcion"); ?>
+            </div>
+        </div>
+
+        </div>
+        <div class="row">
+                                                <div class="col-md-3">
+                                                    <div class="form-group">
+                                                        <label for="genero">Período Escolar</label>
+                                                        <?php echo form::text("codper", "class='form-control'  required",$codper); ?><?php echo form::hidden("cedrep","",$cedrep); ?><?php echo form::hidden("codalu","",$codalu); ?>
+                                                    </div>
+                                                </div>  
+                                                <div class="col-md-3">
+                                                    <div class="form-group">
+                                                        <label for="genero">% de descuento</label>
+                                                        <?php echo form::text("desfac", "class='form-control'  required",$desfac); ?>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <?php echo form::hidden("alumno.cedrep"); ?>
+     <?php echo Form::submit('Guardar',"class='btn btn-info btn-lg pull-right name='aceptar'") ?>
+                                                    </div>
+                                                </div>
+    </div>
+     
+
+
+                                        <?php echo Form::close(); ?>
+                                    </div>
+                                    <div class="tab-pane" id="tab3">
+                                        <div class="row">
+                                         <?php echo Ajax::form('actualizarepr', 'alumno/sal_rep');  ?>
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    <label for="user">Cedula de Identidad</label>
+                                                    <?php echo form::text("cedotrep", "class='form-control'  required"); ?>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    <label for="user">Parentesco</label>
+                                                    <?php echo form::text("parentesco", "class='form-control'  required"); ?>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    <?php echo form::hidden("alumno.cedrep"); ?>
+                                                    <?php echo Form::submit('Guardar',"class='btn btn-info btn-lg pull-right name='aceptar'") ?>
+                                                </div>
+                                            </div>
+                                            <?php echo Form::close(); ?>
+                                        </div>
+
+                                    </div>
+
+                                    <div class="tab-pane" id="tab4">
+                                        <div id="reporte"></div>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                   <?php echo Ajax::link("reportes/con_est/".$cedrep."/".$codalu."/1", '<i class="fa fa-print"></i> Constancia de Estudio', 'reporte'); ?>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                   <?php echo Ajax::link("reportes/con_est/".$cedrep."/".$codalu."/2", '<i class="fa fa-print"></i> Constancia de Inscripción', 'reporte'); ?>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                   <?php echo Ajax::link("reportes/con_est/".$cedrep."/".$codalu."/3", '<i class="fa fa-print"></i> Constancia de Retiro', 'reporte'); ?>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                   <?php echo Ajax::link("reportes/con_est/".$cedrep."/".$codalu."/4", '<i class="fa fa-print"></i> Constancia de Buena Conducta', 'reporte'); ?>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                </div>
+                            </div>
+                        </div>

@@ -1,0 +1,44 @@
+         
+        <? $datos = Session::get('su'); ?>
+        <?php $numcar=$datos['numcar'];$codsed = $datos['codsed']; $codcar = $datos['codcar']; $tiphor = $datos['tiphor']; $numano=$datos['numano']; $numper=$datos['numper']; $possrt=$datos['possrt']; ?>
+
+        <?php $letoca=Load::model('cepoin')->le_toca($codcar,$codsed,$tiphor,$possrt,'stains'); ?>
+
+        <?php foreach(Load::model('ceinse')->todos_te($numcar,$codcar,$codsed,$tiphor,$numano,$numper) as $c) { ?>
+                        <?php $mat=Load::model('cemmat')->busca_uno($c->codcar,$c->codmat); ?>
+                        <div class="row">
+
+                          <div class="col-xs-12 col-md-7 materia"> 
+                            
+                             <?php echo '  '.$mat->codmat.'-'.$mat->nommat ?></div>
+                          <div class="col-xs-4 col-md-1 " align="center">
+                            <?php echo $mat->numcre ?>
+                          </div>
+                          <div class="col-xs-4 col-md-2" align="center" >
+                            <?php echo $c->codsec ?> 
+                          </div>
+                          <div class="col-xs-4 col-md-2" align="center">
+                              <button type="submit" class="btn btn-info btn-lg accordion-toggle" data-toggle="collapse" data-parent="#accordion4" data-target="#mensaje<?php echo $mat->codmat; ?>">H</button>
+                             <?php if($letoca and !load::model('cedins')->find_first("numcar='$c->numcar' and codcar='$c->codcar'") ){ ?>
+                                  <?php echo Ajax::linkConfirm('procesos/inscripcion/'.$c->codmat.'/E', 'X', 'page-wrapper','Esta seguro que no desea Censar esta materia?','btn btn-info btn-lg'); ?>
+                            <?php } ?>
+                          </div>
+                          <div class="col-xs-12 col-md-12" id="elemento<?php echo $mat->codmat; ?>">
+                                
+                              <div id="mensaje<?php echo $mat->codmat; ?>" class="callout callout-success col-md-12 collapse"> 
+                                     <?php if(Load::model('horario')->verifica($codcar,$codsed,$tiphor,$numano,$numper,$c->codmat,$c->codsec)){ ?> 
+                                            <?php echo Conesth::horario($codcar,$codsed,$tiphor,$numano,$numper,$c->codmat,$c->codsec); ?>
+                                      <?php }else{ echo "Error: No existe horario para U.C."; } ?>
+                              </div>
+                              
+                          </div>
+                          </div>
+
+                        <hr>
+        <?php } ?> 
+        <div class="row">
+                  <div class="col-xs-12 col-md-12"><?php echo Ajax::link('reportes/con_ins_ind/'.$c->numcar.'/'.$c->codcar, 'Imprimir', 'page-wrapper','btn btn-info btn-lg'); ?></div>
+        </div>
+        <?php //echo Tag::js("conest/conest"); ?>  
+
+

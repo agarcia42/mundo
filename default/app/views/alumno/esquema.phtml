@@ -1,0 +1,39 @@
+<div class="row menu">
+                    <?php echo View::partial('estudiantes/menu_r') ?>
+                </div>
+
+
+<div class="row">
+                  <div class="col-md-12" id='contenedor'>
+                    <div class="panel panel-info">
+                      <div class="panel-heading">
+                        <!-- Tabs -->
+                        <ul class="nav panel-tabs1">
+                        <?php $x=1; ?>
+                        <?php foreach(load::model('esquema')->find("order: desesq asc") as $esq): ?>
+                          <?php $clas=($x==1)?"active":""; ?>
+                          <li class="<?php echo $clas ?>"><a href="#tab<?php echo $x ?>" data-toggle="tab"><i class="glyphicon glyphicon-user"></i><?php echo $esq->desesq; ?></a></li>
+                          <?php $x++; ?>
+                        <?php endforeach; ?>
+                        </ul>
+                   
+                      </div>
+                      <div class="panel-body">
+                        <div class="tab-content">
+                                <?php $x=1; ?>
+                        <?php foreach(load::model('esquema')->find("order: desesq asc") as $esq): ?>
+                        <?php $clas=($x==1)?"active":""; ?>
+                          <div class="tab-pane <?php echo $clas ?>" id="tab<?php echo $x ?>">
+                                <div class="row">
+                                    <div class="col-md-1">
+                                        <?php echo $x ?>
+                                    </div>
+                                </div>
+                          </div>
+                        <?php $x++; ?>
+                        <?php endforeach; ?>
+                      </div>
+                     </div>
+                  </div>
+                </div>
+              </div>

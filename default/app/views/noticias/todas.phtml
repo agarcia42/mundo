@@ -1,0 +1,43 @@
+<?php echo View::content(); ?>
+
+<?php $Cenoti = Load::model('cenoti')->find("idtab='$idtab'","order: fecreg desc"); ?>
+
+<?php $x=0; ?>
+<?php foreach($Cenoti as $n) { ?>
+	<?php if($x<3) { ?>
+	<div class="col-md-10 blogShort">
+		<h1><?php echo $n->titnot; ?></h1>
+        <?php $not=substr($n->cuenot, 0, 350);  ?>
+    	<article><p><?php echo $not."..."; ?></p></article>
+    	<a class="btn btn-blog pull-right marginBottom10" <?php echo Html::link("noticias/actualizacion/$n->idnot", "LEER MAS"); ?></a> 
+	</div>
+    <?php $x++; } ?>
+<?php } ?>
+<div class="col-md-12 gap10"></div>
+
+                  <!--<div class="col-md-10 blogShort">
+                     <h1>Title 2</h1>
+                        <article><p>
+                         Loremffff Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text
+                         ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only 
+                         five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release
+                         of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of
+                         Lorem Ipsum.
+                         </p></article>
+                     <a class="btn btn-blog pull-right marginBottom10" href="http://bootsnipp.com/user/snippets/2RoQ">LEER MAS</a> 
+                 </div>
+                 
+                  <div class="col-md-10 blogShort pull-right">
+                     <h1>Title 3</h1>
+                        <article><p>
+                         Lorem Ipsum is simplyfff dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text
+                         ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only 
+                         five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release
+                         of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of
+                         Lorem Ipsum.
+                         </p></article>
+                     <a class="btn btn-blog pull-right marginBottom10" href="http://bootsnipp.com/user/snippets/2RoQ">LEER MAS</a> 
+                 </div>
+                 
+               <div class="col-md-12 gap10"></div>
+             </div><-->

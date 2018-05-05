@@ -1,0 +1,41 @@
+<?php echo View::content(); ?>
+
+<?php $Cenoti = Load::model('cenoti'); ?>
+<?php $Cetabs = Load::model('cetabs'); ?>
+
+<?php $noti =  $Cenoti->find_first("idnot='$idnot'"); ?> 
+
+<?php if($noti){ ?>
+    
+    <h1><?php echo $noti->titnot; ?></h1>
+    <?php $fecha=explode(' ', $noti->fecreg); $f=$fecha[0]; $h=$fecha[1];  
+		  $dma=explode('-',$f); $ano=$dma[0]; $mes=Conests::mes($dma[1]); $dia=$dma[2]; ?>
+    <p class="text-mute">Fecha de Publicación: <? echo $mes." ".$dia.", ".$ano." ".$h; ?></p>
+
+    <?php /*?><ol class="breadcrumb">
+  		<li><?php echo Html::link("index", "Inicio"); ?></li>
+  		<li><?php echo Html::link("noticias/todas/$noti->idtab", "Graduaciones"); ?></li>
+  		<li class="active">Data</li>
+	</ol><?php */?>
+    
+    <hr> 
+    <?php $tab=$Cetabs->find_first("id='$noti->idtab'"); ?>
+    <p class="pull-right"><strong>Publicado en:</strong> <?php echo $tab->destab; ?></p>
+    <br><br><br>
+    <article>
+    	<?php if($noti->membrete!="") { ?>
+   			<p class="text-center">
+    			<?php echo $noti->membrete; ?>
+   			</p>
+		<?php } ?>
+     	<h4><?php echo $noti->titnot; ?></h4>
+	    <p class="text-justify"><?php echo $noti->cuenot; ?><br></p>
+    	<p class="text-center"><strong><?php echo $noti->firma; ?><br><?php echo $noti->cargo; ?></strong></p> 
+	</article>
+                
+    <div class="col-md-12 gap10"></div>
+
+<?php } else { ?>         
+	<h1>Noticia no encontrada.</h1>
+<?php } ?>
+                 

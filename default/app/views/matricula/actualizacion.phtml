@@ -1,0 +1,116 @@
+<?php echo View::content() ?>
+<?php 
+$Seccion = Load::model('seccion');
+$Inscripcion = Load::model('inscripcion');
+$Alumno = Load::model('alumno');
+$Periodo = Load::model('periodo');
+
+?>
+<?php //$codper=$Periodo->busca_uno(); ?>
+
+
+<?php echo Ajax::form('page-wrapper', 'matricula/actualizacion');  ?>
+<div class="box box-info">
+                                     <div class="box-header with-border">
+                                            <h4 class="page-head-line">Matricular</h4>
+                                            <div class="row">
+                                              <div class="col-md-4">
+                                                    <div class="form-group">
+                                                        <label for="codigo">Nivel</label>
+                                                         <?php echo Conesth::dbselect("codniv","desniv","nivel","",$codniv,"form-control","matricula/actualizacion"); ?>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <div class="form-group">
+                                                        <label for="codigo">Curso</label>
+                                                         <?php echo Conesth::dbselect("codcur","descur","curso","where codniv='$codniv'",$codcur,"form-control","matricula/actualizacion/".$codniv); ?>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <div class="form-group">
+                                                        <label for="codigo">Periodo</label>
+                                                         <?php echo Conesth::dbselect("codper","codper","periodo","",$codper,"form-control","matricula/actualizacion/".$codniv."/".$codcur); ?>
+                                                    </div>
+                                                </div>
+                                                
+                                            </div>
+                                            <div class="row">
+                                              <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label for="codigo">Seccion Origen</label>
+                                                         <?php echo Conesth::dbselect("codsec","codsec","seccion","where codniv='$codniv' and codcur='$codcur' and codper='$codper'",$codsec1,"form-control","matricula/actualizacion/".$codniv."/".$codcur."/".$codper); ?>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label for="codigo">Seccion Destino</label>
+                                                        <?php $action='matricula/actualizacion/'.$codniv.'/'.$codcur.'/'.$codper.'/'.$codsec1; ?>
+    <select name="codsec2" id="codsec2" class="js-remote form-control" data-to="page-wrapper" action="<?php echo $action; ?>">
+      <?php if($codniv!="0" and $codcur!="0" and $codsec1!="0" and $codsec2=="0"){ ?>
+      <option value="0">Seleccione...</option>
+      <?php foreach($Seccion->find("conditions: codniv='$codniv' and codcur='$codcur' and codsec!='$codsec1' and codper='$codper'") as $c): ?>
+      <option value="<?php echo $c->codsec ?>"><?php echo $c->codsec ?></option>
+      <?php endforeach; ?>
+      <?php }elseif($codniv!="0" and $codcur!="0" and $codsec1!="0" and $codsec2!="0"){ ?>
+      <option value="0">Seleccione...</option>
+      <?php foreach($Seccion->find("conditions: codniv='$codniv' and codcur='$codcur' and codsec!='$codsec1' and codper='$codper'") as $c): ?>
+      <?php if($codsec2==$c->codsec){ ?>
+      <option value="<?php echo $c->codsec ?>" selected="selected"><?php echo $c->codsec ?></option>
+      <?php }else{ ?>
+      <option value="<?php echo $c->codsec ?>" ><?php echo $c->codsec ?></option>
+      <?php } ?>
+      <?php endforeach; ?>
+      <?php } else { ?>
+      <option value="0">Seleccione...</option>
+      <?php } ?>
+    </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                              <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        
+                                                         <select size="10" multiple="multiple" name="list1[]" class="form-control">
+        <?php if($codniv!="0" and $codcur!="0" and $codsec1!="0"){ ?>
+
+        <?php $xy=1; ?>
+      <?php foreach($Alumno->find("cedrep||codalu in(select cedrep||codalu from inscripcion where codniv='$codniv' and codcur='$codcur' and codsec='$codsec1' and codper='$codper')","order: apealu") as $r): ?>
+                    <option value="<?php echo $r->cedrep.$r->codalu; ?>"><?php echo $xy.'  '.$r->apealu.', '.$r->nomalu; ?></option>
+                    <?php $xy++; ?> 
+      <?php endforeach; ?>
+    <?php } ?>
+        </select>
+                                                    </div>
+                                                </div>
+                                                
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        
+                                                         <select size="10" multiple id="list2[]" class="form-control" disabled="disabled">
+    
+      <?php if($codniv!="0" and $codcur!="0" and $codsec2!="0"){ ?>
+          <?php $xy=1; ?>
+      <?php foreach($Alumno->find("cedrep||codalu in(select cedrep||codalu from inscripcion where codniv='$codniv' and codcur='$codcur' and codsec='$codsec2' and codper='$codper')","order: apealu") as $r): ?>
+                    <option value="<?php echo $r->codalu; ?>"><?php echo $xy.'  '.$r->apealu.', '.$r->nomalu; ?></option>
+                    <?php $xy++; ?> 
+      <?php endforeach; ?>
+    <?php } ?>
+         </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-12">
+                                                    <div class="form-group">
+                                                        <?php echo form::hidden("inscripcion.fecreg"); ?>
+                                                        <?php echo Form::submit('Transferir a Destino',"class='btn btn-info btn-lg pull-right' name='aceptar'") ?>
+                                                    </div>
+                                                </div>
+                                                
+                                    </div>
+                            </div>
+
+
+<?php echo Form::close(); ?>
+  
+ 
