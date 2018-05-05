@@ -12,8 +12,7 @@
  * @sitio      http://localhost/mundo                              *  
  * @license    UNEFM                                                *
 /*******************************************************************/
-/prueba/
-/prueba2/
+
 class AlumnoController extends AppController{
 
     protected function before_filter(){
